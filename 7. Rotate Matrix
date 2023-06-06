@@ -1,6 +1,6 @@
 Question Link : https://leetcode.com/problems/rotate-image/
 
-Solution : 
+Solution 1: 
 
 class Solution {
 public:
@@ -14,6 +14,26 @@ public:
             for(int col = 0;col<n;col++){
                 matrix[col][rows - row - 1] = v[row][col];
             }
+        }
+    }
+};
+
+Solution 2 :
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+               swap(matrix[i][j],matrix[j][i]);
+            }
+        }
+
+        //reversing each row
+        for(int i=0;i<n;i++){
+            reverse(matrix[i].begin(),matrix[i].end());
         }
     }
 };

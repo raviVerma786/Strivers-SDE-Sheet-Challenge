@@ -1,0 +1,26 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/merge-two-sorted-arrays_8230835?challengeSlug=striver-sde-challenge
+                https://leetcode.com/problems/merge-sorted-array/
+
+Solution : 
+
+vector<int> ninjaAndSortedArrays(vector<int>& nums1, vector<int>& nums2, int m, int n) {
+	    int i = m-1,j=0;
+
+        while(i>=0 && j<n){
+            if(nums1[i] > nums2[j]){
+                swap(nums1[i],nums2[j]);
+                i--;
+                j++;
+            }
+            else break;
+        }
+
+        sort(nums1.begin(),nums1.begin() + m);
+        sort(nums2.begin(),nums2.end());
+
+        for(int k=0;k<n;k++){
+            nums1[k + m] = nums2[k];
+        }
+
+		return nums1;
+}

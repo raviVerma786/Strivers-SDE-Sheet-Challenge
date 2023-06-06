@@ -1,0 +1,19 @@
+Question Link : https://leetcode.com/problems/rotate-image/
+
+Solution : 
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        vector<vector<int>> v;
+        v.insert(v.end(),matrix.begin(),matrix.end());
+        int rows = matrix.size(),columns = matrix[0].size();
+
+        int n = matrix.size();
+        for(int row=0;row<n;row++){
+            for(int col = 0;col<n;col++){
+                matrix[col][rows - row - 1] = v[row][col];
+            }
+        }
+    }
+};

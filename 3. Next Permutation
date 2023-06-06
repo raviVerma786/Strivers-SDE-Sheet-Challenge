@@ -1,0 +1,32 @@
+Question Links : https://www.codingninjas.com/codestudio/problems/893046?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+                https://leetcode.com/problems/next-permutation/
+Solution : 
+
+vector<int> nextPermutation(vector<int> &permutation, int n)
+{
+   int ind = -1;
+   for(int i=n-2;i>=0;i--){
+       if(permutation[i] < permutation[i+1]){
+           ind = i;
+           break;
+       }
+   }
+   
+   if(ind == -1){
+       reverse(permutation.begin(),permutation.end());
+       return permutation;
+   }
+
+   int closestSmaller = -1;
+   for(int i=n-1;i>ind;i--){
+       if(permutation[i] > permutation[ind]){
+           closestSmaller = i;
+           break;
+       }
+   }
+
+   swap(permutation[ind],permutation[closestSmaller]);
+   reverse(permutation.begin() + ind + 1,permutation.end());
+
+   return permutation;
+}

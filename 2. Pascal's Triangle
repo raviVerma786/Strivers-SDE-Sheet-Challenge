@@ -1,0 +1,25 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/pascal-s-triangle_8230805?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+vector<vector<long long int>> printPascal(int n) {
+  vector<vector<long long int>>v;
+  v.push_back({1});
+  n--;
+
+  while(n--){
+    long long sum = 0;
+    
+    v.push_back({1});
+    long long sz = v.size() - 1;
+
+    for(int j=1;j<sz;j++){
+      sum = v[sz - 1][j] + v[sz - 1][j-1];
+      v[sz].push_back(sum);
+    }
+
+    v[sz].push_back(1);
+  }
+
+  return v;
+}

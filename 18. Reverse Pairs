@@ -1,0 +1,110 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/reverse-pairs_8230825?challengeSlug=striver-sde-challenge&leftPanelTab=1
+                https://leetcode.com/problems/reverse-pairs/description/
+
+Solution : 
+
+#include <bits/stdc++.h> 
+
+int mergeSort(vector<int> &arr,int l,int h){
+	if(l>=h) return 0;
+	int mid = (l + 0LL + h)/2;
+
+	int ans = 0;
+	ans += mergeSort(arr,l,mid);
+	ans += mergeSort(arr,mid+1,h);
+	
+	//merge 
+	//step to find ans efficiently
+	int j = mid+1;
+	for(int i=l;i<=mid;i++){
+		while(j<=h && arr[i] > 2*1LL*arr[j]){
+			j++;
+		}
+		ans += (j-(mid+1));
+	}
+	//normal merge steps
+	vector<int> v;
+	int i=l;j=mid+1;
+	while(i<=mid && j<=h){
+		if(arr[i] < arr[j]){
+			v.push_back(arr[i]);
+			i++;
+		} 
+		else{
+			v.push_back(arr[j]);
+			j++;
+		}
+	}
+	while(i<=mid){
+		v.push_back(arr[i]);
+		i++;
+	}
+	while(j<=h){
+		v.push_back(arr[j]);
+		j++;
+	}
+	
+	for(int k=l;k<=h;k++){
+		arr[k] = v[k-l];
+	}
+	
+	return ans;
+}
+
+int reversePairs(vector<int> &arr, int n){
+	return mergeSort(arr,0,n-1);
+}
+
+
+Solution 2 : (Similar solution)
+
+#include <bits/stdc++.h> 
+
+void mergeSort(vector<int> &arr,int l,int h,int &ans){
+	if(l>=h) return;
+	int mid = (l + 0LL + h)/2;
+	mergeSort(arr,l,mid,ans);
+	mergeSort(arr,mid+1,h,ans);
+	
+	//merge 
+	//step to find ans efficiently
+	int j = mid+1;
+	for(int i=l;i<=mid;i++){
+		while(j<=h && arr[i] > 2*1LL*arr[j]){
+			j++;
+		}
+		ans += (j-(mid+1));
+	}
+	//normal merge steps
+	vector<int> v;
+	int i=l;j=mid+1;
+	while(i<=mid && j<=h){
+		if(arr[i] < arr[j]){
+			v.push_back(arr[i]);
+			i++;
+		} 
+		else{
+			v.push_back(arr[j]);
+			j++;
+		}
+	}
+	while(i<=mid){
+		v.push_back(arr[i]);
+		i++;
+	}
+	while(j<=h){
+		v.push_back(arr[j]);
+		j++;
+	}
+	
+	for(int k=l;k<=h;k++){
+		arr[k] = v[k-l];
+	}
+	
+}
+
+int reversePairs(vector<int> &arr, int n){
+	int ans = 0;
+	mergeSort(arr,0,n-1,ans);
+	return ans;
+}

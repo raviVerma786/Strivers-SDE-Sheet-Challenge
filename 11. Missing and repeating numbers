@@ -1,0 +1,23 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/missing-and-repeating-numbers_8230733?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution 1: 
+
+//https://youtu.be/2D0D8HE6uak
+pair<int, int> missingAndRepeating(vector<int> &arr, int n) {
+	int x,y; // duplicate and missing number respectively
+
+	int sum1ToN = (n * (n+1))/2;
+	int sum = accumulate(arr.begin(),arr.end(),0);
+	int diffOfXAndY = sum - sum1ToN;
+    
+	long long sumOfSquares1ToN = (n*1LL*(n+1)*1LL*(2*n + 1))/6;
+	long long sqSum = 0;
+	for(int i : arr) sqSum += (i*1LL*i);
+
+	int sumOfXAndY = (sqSum - sumOfSquares1ToN)/diffOfXAndY;
+    
+	x = (sumOfXAndY + diffOfXAndY)/2;
+	y = x - diffOfXAndY;
+
+	return {y,x};
+}

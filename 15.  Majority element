@@ -1,0 +1,24 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/day-6-majority-element_8230731?challengeSlug=striver-sde-challenge&leftPanelTab=0
+                https://leetcode.com/problems/majority-element/
+
+Solution :
+
+//https://youtu.be/nP_ns3uSh80
+//Moore's Algorithm
+int findMajorityElement(int arr[], int n) {
+	int ele = -1,cnt = 0;
+	for(int i=0;i<n;i++){
+		if(cnt == 0) ele = arr[i];
+
+		if(arr[i] == ele) cnt++;
+		else cnt--;
+	}
+  
+	//ele may be our majority element
+  cnt = 0;
+  for(int i=0;i<n;i++){
+    if(arr[i] == ele) cnt++;
+  }
+  
+	return cnt > n/2 ? ele : -1;
+}

@@ -1,0 +1,26 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/find-four-elements-that-sums-to-a-given-value_8230785?challengeSlug=striver-sde-challenge&leftPanelTab=1
+                https://leetcode.com/problems/4sum/description/
+
+Solution : 
+//https://youtu.be/eD95WRfh81c
+
+string fourSum(vector<int> nums, int target, int n) {
+        sort(nums.begin(),nums.end());
+     
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                long long search = target*1LL - nums[i]*1LL - nums[j];
+                int low = j+1,high = n-1;
+                bool check = false;
+                while(low < high){
+                    if(nums[low] + nums[high] > search) high--;
+                    else if(nums[low] + nums[high] < search) low++;
+                    else{
+                       return "Yes";
+                    }
+                }    
+            }
+        }
+
+        return "No";
+}

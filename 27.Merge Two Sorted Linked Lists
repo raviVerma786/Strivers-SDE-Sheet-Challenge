@@ -1,0 +1,33 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/merge-two-sorted-linked-lists_8230729?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution : 
+
+Node<int>* sortTwoLists(Node<int>* first, Node<int>* second)
+{
+    if(!first) return second;
+    if(!second) return first;
+    if(first->data > second->data) return sortTwoLists(second,first);
+
+    Node<int>* head = first;
+    Node<int>* prev = first;
+    first = first->next;
+
+    while(first && second){
+        if(first->data < second->data) {
+            prev = first;
+            first = first->next;
+        }
+        else{
+            Node<int>* temp = second->next;
+            prev->next = second;
+            second->next = first;
+
+            prev = second;
+            second = temp;
+        }
+    }
+    
+    if(!first) prev->next = second;
+
+    return head;
+}

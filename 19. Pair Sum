@@ -1,0 +1,43 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/pair-sum_8230699?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution : 
+
+#include <bits/stdc++.h>
+
+vector<vector<int>> pairSum(vector<int> &arr, int s){
+   sort(arr.begin(),arr.end());
+   int i = 0,j = arr.size() - 1;
+   vector<vector<int>> ans;
+
+   while( i < j){
+      int sum = arr[i] + arr[j];
+      if(sum < s) i++;
+      else if (sum > s) j--;
+      else{
+         int cnt = 0;
+         int ele1 = arr[i], ele2 = arr[j];
+         if(ele1 == ele2){
+            int k = (j - i + 1);
+            cnt = (k * (k - 1))/2;
+            i = j + 1;
+         }
+         else{
+            int cnt1 = 0, cnt2 = 0;
+            while(i<=j && arr[i] == ele1){
+               i++;
+               cnt1++;
+            }
+
+            while(i<=j && arr[j] == ele2){
+               j--;
+               cnt2++;
+            }
+            
+            cnt = cnt1 * cnt2;
+         }
+         while(cnt--) ans.push_back({ele1,ele2});
+      }
+   }
+
+   return ans;
+}

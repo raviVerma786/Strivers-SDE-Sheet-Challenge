@@ -1,0 +1,16 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/reverse-linked-list_8230724?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+//https://youtu.be/iRtLEoL-r-g
+LinkedListNode<int> *reverseLinkedList(LinkedListNode<int> *head) 
+{
+    LinkedListNode<int> *newHead = NULL;
+    while(head){
+        LinkedListNode<int> *temp = head->next;
+        head->next = newHead;
+        newHead = head;
+        head = temp;
+    }
+
+    return newHead;
+}

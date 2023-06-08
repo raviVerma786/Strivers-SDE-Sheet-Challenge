@@ -1,0 +1,28 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/longest-substring-without-repeating-characters_8230684?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+
+Solution : O(2n)
+
+//https://youtu.be/qtVh-XEpsJo
+int uniqueSubstrings(string input) {
+    vector<int> v(26,0);
+    int i=0,j=0,cnt = 1,n = input.size();
+
+    while(j < n){
+        v[input[j] - 'a']++;
+
+        if(v[input[j] - 'a'] > 1){
+            cnt = max(cnt,j - i);
+
+            while(v[input[j] - 'a'] > 1){
+                v[input[i] - 'a']--;
+                i++;
+            }
+        }
+
+        j++;
+    }
+    
+    cnt = max(cnt,j - i);
+    return cnt;
+}

@@ -1,0 +1,45 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/longest-consecutive-sequence_8230708?challengeSlug=striver-sde-challenge&leftPanelTab=1
+                https://leetcode.com/problems/longest-consecutive-sequence/description/
+
+Solution : O(nlogn) solution
+
+//https://youtu.be/oO5uLE7EUlM
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        if(nums.size()==0) return 0;
+        sort(nums.begin(),nums.end());
+        int ans = 1,ct=1;
+        for(int i=1;i<nums.size();i++){
+            if(nums[i]==nums[i-1]) continue;
+            else if(nums[i] == nums[i-1] + 1) ct++;
+            else ct = 1;
+            ans = max(ans,ct);
+        }
+        return ans;
+    }
+};
+
+
+Solution 2 : Optimal solution O(n) space and O(n) time complexity
+
+#include <bits/stdc++.h>
+int lengthOfLongestConsecutiveSequence(vector<int> &arr, int n) {
+    unordered_set<int> st;
+    for(int i : arr) st.insert(i);
+    
+    int cnt = 0;
+    for(int i : st){
+        if(st.count(i-1)) continue;
+        else{
+            int temp = 0,ele = i;
+            while(st.count(i)){
+                temp++;
+                i++;
+            }
+            cnt = max(cnt,temp);
+        }
+    }
+
+    return cnt;
+}

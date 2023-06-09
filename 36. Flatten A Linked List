@@ -1,0 +1,44 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/flatten-a-linked-list_8230827?challengeSlug=striver-sde-challenge&leftPanelTab=0
+                https://practice.geeksforgeeks.org/problems/flattening-a-linked-list/1
+
+Solution : 
+//https://youtu.be/ysytSSXpAI0
+Node* merge(Node* left,Node* right){
+	Node* temp = new Node();
+	Node* newHead = temp;
+
+	while(left && right){
+		if(left->data < right->data){
+			temp->child = left;
+			left = left->child;
+		}
+		else{
+			temp->child = right;
+			right = right->child;
+		}
+
+		temp = temp->child;
+	}
+
+	if(!left) temp->child = right;
+	else if(!right) temp->child = left;
+    
+	//Making all next pointers Null
+	temp = newHead;
+	while(temp){
+		temp->next = NULL;
+		temp = temp->child;
+	}
+
+	//returning head of new linked list
+	return newHead->child;
+}
+Node* flattenLinkedList(Node* head) 
+{
+	   if(!head || !head->next) return head;
+	   
+	   head->next = flattenLinkedList(head->next);
+	   head = merge(head, head->next);
+
+	   return head;
+}

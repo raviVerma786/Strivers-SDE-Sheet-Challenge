@@ -1,0 +1,49 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/delete-kth-node-from-end_8230725?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution 1 : TC : O(2n) 
+
+// https://youtu.be/Lhu3MsXZy-Q
+Node* removeKthNode(Node* head, int K)
+{
+    int len = 0;
+    Node* temp = head;
+    while(temp){
+        len++;
+        temp = temp->next;
+    }
+
+    K = len - K; //from starting
+    
+    if(K == 0) return head->next;
+    
+    K--; // to find just previous node
+    temp = head;
+    while(K-- > 0) temp = temp->next;
+    
+    //deleting
+    temp->next = temp->next->next;
+
+    return head;
+}
+
+
+Solution 2 : Optimal Solution O(n) 
+
+// https://youtu.be/Lhu3MsXZy-Q
+Node* removeKthNode(Node* head, int K)
+{
+   Node* dummy = new Node();
+   dummy->next = head;
+
+   Node* slow = dummy, *fast = dummy;
+   while(K--) fast = fast->next;
+
+   while(fast->next){
+       slow = slow->next;
+       fast = fast->next;
+   }
+
+   slow->next = slow->next->next;
+
+   return dummy->next;
+}

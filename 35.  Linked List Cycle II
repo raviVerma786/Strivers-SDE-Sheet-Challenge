@@ -1,0 +1,30 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/linked-list-cycle-ii_8230823?challengeSlug=striver-sde-challenge&leftPanelTab=1
+                https://leetcode.com/problems/linked-list-cycle-ii/
+
+Solution : 
+
+Node *firstNode(Node *head)
+{
+    Node* slow = head, *fast = head;
+    bool isCyclePresent = false;
+
+    while(fast && fast->next){
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if(slow == fast){
+            isCyclePresent = true;
+            break;
+        }
+    }
+
+    if(!isCyclePresent) return NULL;
+    
+    fast = head;
+    while(slow != fast){
+        slow = slow->next;
+        fast = fast->next;
+    }
+    
+    return fast;
+}

@@ -3,6 +3,7 @@ Question Link : https://www.codingninjas.com/codestudio/problems/linked-list-cyc
 
 Solution : 
 
+//https://youtu.be/QfbOhn0WZ88
 Node *firstNode(Node *head)
 {
     Node* slow = head, *fast = head;

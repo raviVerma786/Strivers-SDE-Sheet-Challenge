@@ -1,0 +1,39 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/palindrome-linked-list_8230717?challengeSlug=striver-sde-challenge&leftPanelTab=1
+                https://leetcode.com/problems/palindrome-linked-list/description/
+
+
+Solution : 
+
+LinkedListNode<int>* reverse(LinkedListNode<int> *head){
+    LinkedListNode<int> *newHead = NULL;
+    while(head){
+        LinkedListNode<int> *temp = head->next;
+        head->next = newHead;
+        newHead = head;
+        head = temp;
+    }
+
+    return newHead;
+}
+bool isPalindrome(LinkedListNode<int> *head) {
+    if(!head || !head->next) return true;
+
+    //finding mid
+    LinkedListNode<int> *slow = head,*fast = head->next;
+    while(fast && fast->next){
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    
+    LinkedListNode<int> *temp = slow->next;
+    slow->next = NULL;
+    LinkedListNode<int> *head2 = reverse(temp);
+    
+    while(head && head2){
+        if(head->data != head2->data) return false;
+        head = head->next;
+        head2 = head2->next;
+    }
+    
+    return true;
+}

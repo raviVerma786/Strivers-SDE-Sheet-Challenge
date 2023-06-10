@@ -1,0 +1,35 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/rotate-linked-list_8230752?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+int getLength(Node* head){
+     int len = 0;
+     while(head){
+          len++;
+          head = head->next;
+     }
+     return len;
+}
+
+Node *rotate(Node *head, int k) {
+     Node* temp = head;
+     int n = getLength(temp);
+     k = (k % n);
+
+     if(k == 0) return head;
+     
+     k = n - k;
+     temp = head;
+     for(int i=1;i<k;i++){
+          temp = temp->next;
+     }
+     
+     Node* newHead = temp->next;
+     temp->next = NULL;
+
+     temp = newHead;
+     while(temp->next) temp = temp->next;
+     temp->next = head;
+
+     return newHead;
+}

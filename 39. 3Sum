@@ -1,0 +1,35 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/3sum_8230739?challengeSlug=striver-sde-challenge&leftPanelTab=0
+                https://leetcode.com/problems/3sum/description/
+
+Solution :
+
+// https://youtu.be/DhFh8Kw7ymk
+vector<vector<int>> findTriplets(vector<int>nums, int n, int K) {
+	 	vector<vector<int>> ans;
+		if(n<3) return ans;
+
+        sort(nums.begin(),nums.end());
+
+        //two pointer method using technique a+b = -c;
+        for(int i=0;i<n-2;i++){
+            if(i>0 && nums[i] ==nums[i-1]) continue;
+
+			int lo = i+1,hi = n-1;
+			while(lo < hi){
+				int sum= nums[i] + nums[lo] + nums[hi];
+				if(sum < K) lo++;
+				else if(sum > K) hi--;
+				else{
+					vector<int> temp = {nums[i],nums[lo],nums[hi]};
+					ans.push_back(temp);
+					lo++;
+					hi--;
+
+					while(lo < hi && nums[lo] == nums[lo - 1]) lo++;
+					while(lo < hi && nums[hi] == nums[hi + 1]) hi--;
+				}
+			}
+
+        }
+		return ans;
+}

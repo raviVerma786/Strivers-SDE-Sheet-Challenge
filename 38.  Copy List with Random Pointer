@@ -1,0 +1,73 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/copy-list-with-random-pointer_8230734?challengeSlug=striver-sde-challenge&leftPanelTab=1
+                https://leetcode.com/problems/copy-list-with-random-pointer/description/
+
+Solution : (Brute Force Solution)
+
+// https://youtu.be/VNf6VynfpdM
+LinkedListNode<int> *cloneRandomList(LinkedListNode<int> *head)
+{
+    unordered_map<LinkedListNode<int>*,LinkedListNode<int>*> mp;
+
+    LinkedListNode<int> *temp = head;
+    while(temp){
+        LinkedListNode<int>* node = new LinkedListNode<int>(temp->data);
+        mp[temp] = node;
+        temp = temp->next;
+    }
+
+    temp = head;
+    while(temp){
+        mp[temp]->next = mp[temp->next];
+        mp[temp]->random = mp[temp->random];
+
+        temp = temp->next;
+    }
+    return mp[head];
+
+}
+
+Solution 2 : (Optimal Solution)
+
+// https://youtu.be/VNf6VynfpdM
+LinkedListNode<int> *cloneRandomList(LinkedListNode<int> *head)
+{
+    if(!head) return NULL;
+
+    LinkedListNode<int> *temp = head;
+
+    //adding new nodes in middle
+    while(temp){
+        LinkedListNode<int>* node = new LinkedListNode<int>(temp->data);
+        LinkedListNode<int> *nxt = temp->next;
+        temp->next = node;
+        node->next = nxt;
+
+        temp = nxt;
+    }
+    
+    //adding random links
+    temp = head;
+    while(temp && temp->next){
+       temp->next->random = temp->random;
+       temp = temp->next->next;
+    }
+
+    //making new list with new nodes and making original as it was.
+    temp = head;
+    LinkedListNode<int> *front = head;
+    LinkedListNode<int> *node = new LinkedListNode<int>(-1);
+    LinkedListNode<int> *newHead = node;
+
+    while(front && front->next){
+        front = front->next->next;
+        
+        node->next = temp->next;
+        temp->next = front;
+
+        node = node->next;
+        temp = temp->next;
+    }
+
+    return newHead->next;
+
+}

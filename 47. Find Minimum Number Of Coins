@@ -22,3 +22,35 @@ int findMinimumCoins(int amount)
 }
 
 
+Solution Gfg : 
+
+class Solution{
+
+	public:
+	
+	int helper(int coins[],int V,int i,vector<vector<int>>&dp){
+	    if(V == 0) return 0;
+	    if(i < 0) return 1e9;
+	    
+	    if(dp[V][i] != -1) return dp[V][i];
+	    
+	    
+	    int take = INT_MAX;
+	    if(V >= coins[i]) take = 1 + helper(coins,V - coins[i],i,dp);
+	    
+	    int notTake = helper(coins,V,i - 1,dp);
+	    
+	    return dp[V][i] = min(take,notTake);
+	}
+	
+	int minCoins(int coins[], int M, int V) 
+	{ 
+	    sort(coins,coins + M);
+	    vector<vector<int>> dp(V + 1,vector<int>(M,-1));
+	    
+	    int ans = helper(coins,V,M-1,dp);
+	    return ans >= 1e9 ? -1 : ans;
+	} 
+	  
+};
+

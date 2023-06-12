@@ -1,0 +1,27 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/minimum-number-of-platforms_8230720?challengeSlug=striver-sde-challenge&leftPanelTab=1
+                https://practice.geeksforgeeks.org/problems/minimum-platforms-1587115620/1#
+
+Soluiton :
+
+// https://youtu.be/dxVcMDI7vyI
+int calculateMinPatforms(int arr[], int dep[], int n) {
+       sort(arr,arr+n);
+       sort(dep,dep + n);
+       int i=0,j=0;
+       int cnt = 0,maxi = 0;
+       
+       while(i<n && j<n){
+           if(arr[i] <= dep[j]){
+               cnt++;
+               i++;
+           }
+           else if(dep[j] < arr[i]){
+               cnt--;
+               j++;
+           }
+           
+           maxi = max(cnt,maxi);
+       }
+       
+       return maxi;
+}

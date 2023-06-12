@@ -1,0 +1,23 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/subset-sum_8230859?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+#include <bits/stdc++.h> 
+
+void helper(vector<int>&num,vector<int>&ans,int i,int sum){
+    if(i == num.size()){
+        ans.push_back(sum);
+        return;
+    }
+
+    helper(num,ans,i+1,sum + num[i]);
+    helper(num,ans,i+1,sum);
+}
+vector<int> subsetSum(vector<int> &num)
+{
+   vector<int> ans;
+   helper(num,ans,0,0);
+   
+   sort(ans.begin(),ans.end());
+   return ans;
+}

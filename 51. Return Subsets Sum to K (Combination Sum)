@@ -6,19 +6,16 @@ Solution (Coding Ninja):
 
 void helper(vector<int>&nums,vector<int>&temp,int i,int sum,vector<vector<int>>&ans){
     
-    if(sum == 0){
-        ans.push_back(temp);
+    if(i == nums.size()){
+        if(sum==0) ans.push_back(temp);
+        return;
     }
     
-    for(int j=i;j<nums.size();j++){
-        temp.push_back(nums[j]);
-        sum -= nums[j];
+    temp.push_back(nums[i]);
+    helper(nums,temp,i+1,sum - nums[i],ans);   
+    temp.pop_back();
 
-        helper(nums,temp,j+1,sum,ans);
-        
-        temp.pop_back();
-        sum += nums[j];
-    }
+    helper(nums,temp,i+1,sum,ans);
     
 }
 

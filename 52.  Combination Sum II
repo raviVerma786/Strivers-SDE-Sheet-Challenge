@@ -1,0 +1,36 @@
+Question Link : https://leetcode.com/problems/combination-sum-ii/description/
+                https://www.codingninjas.com/codestudio/problems/combination-sum-ii_8230820?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution : 
+
+#include<bits/stdc++.h>
+
+void helper(vector<int>&arr,vector<vector<int>>&ans,vector<int>&temp,int n,int target,
+int i){
+
+	if(target == 0){
+		ans.push_back(temp);
+		return;
+	}
+	if(i == n) return;
+    
+	for(int j=i;j<n;j++){
+		if(j > i && arr[j]==arr[j-1]) continue;
+		if(arr[j] <= target){
+			temp.push_back(arr[j]);
+			helper(arr,ans,temp,n,target - arr[j],j+1);
+			temp.pop_back();
+		}
+	}
+
+
+}
+vector<vector<int>> combinationSum2(vector<int> &arr, int n, int target)
+{
+	sort(arr.begin(),arr.end());
+	vector<vector<int>> ans;
+	vector<int> temp;
+
+	helper(arr,ans,temp,n,target,0);
+	return ans;
+}

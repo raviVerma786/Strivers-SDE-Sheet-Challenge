@@ -1,0 +1,35 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/valid-sudoku_8230704?challengeSlug=striver-sde-challenge&leftPanelTab=1
+                https://leetcode.com/problems/sudoku-solver/
+Solution : 
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/FWAIf_EVUKE
+bool isSafe(int matrix[9][9],int row,int col,int num){
+     //checking row
+    for(int i = 0;i<9;i++){
+        if(matrix[i][col] == num) return false;
+        if(matrix[row][i] == num) return false;
+        if(matrix[(i/3) + 3*(row/3)][3*(col/3) + i%3] == num) return false;
+    }
+    return true;
+}
+
+bool isItSudoku(int matrix[9][9]) {
+   for(int i=0;i<9;i++){
+       for(int j=0;j<9;j++){
+           if(matrix[i][j] == 0){
+               for(int k=1;k<=9;k++){
+                   if(isSafe(matrix,i,j,k)){
+                       matrix[i][j] = k;
+                       if(isItSudoku(matrix)) return true;
+                       matrix[i][j] = 0;
+                   }
+               }
+               return false;
+           }
+       }
+   }
+
+   return true;
+}

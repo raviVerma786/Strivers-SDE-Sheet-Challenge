@@ -1,0 +1,33 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/find-nth-root-of-m_8230799?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+//https://youtu.be/WjpswYrS2nY
+long long power(long long a,long long b,int m){
+  long long ans = 1;
+  while(b){
+    if(a > m || ans > m) return INT_MAX;
+
+    if((b&1)){
+      ans = ans*a;
+    }
+    a = a*a;
+    b = b>>1;
+
+  }
+  return ans;
+}
+
+int NthRoot(int n, int m) {
+  int low = 0,high = m;
+  
+  while(low <= high){
+    long long mid = low + (high - low)/2;
+    long long value = power(mid,n,m);
+    if(value == m) return mid;
+    else if(value > m) high = mid - 1;
+    else low = mid + 1;
+   }
+
+  return -1;
+}

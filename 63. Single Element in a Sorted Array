@@ -1,0 +1,86 @@
+Question Link : https://leetcode.com/problems/single-element-in-a-sorted-array/
+ https://www.codingninjas.com/codestudio/problems/single-element-in-a-sorted-array_8230826?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution 1: 
+
+    int ans = -1;
+
+    bool check(vector<int>&nums,int mid){
+        return nums[mid] != nums[mid-1] && nums[mid] != nums[mid+1];
+    }
+
+    void binarySearch(vector<int>&nums,int low,int high){
+        if(low < high){
+            int mid = (low + high)/2;
+            binarySearch(nums,low,mid);
+            binarySearch(nums,mid+1,high);
+
+            if(check(nums,mid)){
+                ans = nums[mid];
+                return;
+            }
+        }
+    }
+int singleNonDuplicate(vector<int>& nums)
+{
+		int n = nums.size();
+
+        //Handling edge cases
+        if(n == 1 || nums[0] != nums[1]) return nums[0];
+        if(nums[n-1] != nums[n-2]) return nums[n-1];
+
+        binarySearch(nums,1,n-2);
+        return ans;
+}
+
+
+Solution 2 : (optimal)
+
+// https://youtu.be/PzszoiY5XMQ
+int singleNonDuplicate(vector<int>& arr)
+{
+		int n = arr.size();
+
+        //Handling edge cases
+        if(n == 1 || arr[0] != arr[1]) return arr[0];
+        if(arr[n-1] != arr[n-2]) return arr[n-1];
+       
+        //applying binary search
+		int low = 1,high = n-2,ans = -1;
+		while(low <= high){
+			int mid = (low + high)/2;
+
+			if(arr[mid] != arr[mid-1] && arr[mid] != arr[mid + 1]){
+				ans = arr[mid];
+				break;
+			}
+            
+			int idx = mid;
+			if(arr[mid] == arr[mid + 1]) idx++;
+
+			if(idx % 2 == 0) high = mid - 1;
+			else low = mid + 1;
+		}
+        return ans;
+}
+
+
+
+Solution 2 : (More optimal)
+
+// https://youtu.be/PzszoiY5XMQ
+int singleNonDuplicate(vector<int>& arr)
+{
+		int n = arr.size();
+
+		int low = 0,high = n-2;
+		while(low <= high){
+			int mid = (low + high)/2;
+
+			if(arr[mid] == arr[mid^1]){
+				low = mid + 1;
+			}
+			else high = mid - 1;
+		}
+        return arr[low];
+}

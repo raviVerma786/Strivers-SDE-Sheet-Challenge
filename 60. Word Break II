@@ -1,0 +1,100 @@
+Question Link : https://leetcode.com/problems/word-break-ii/description/
+   https://www.codingninjas.com/codestudio/problems/word-break-ii_8230786?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution 1 : (Using HashMap)
+
+class Solution {
+private:
+    vector<string> ans;
+public:
+    void helper(string &s,unordered_set<string>&st,string str,int i){
+        if(i >= s.size()){
+            str.pop_back();
+            ans.push_back(str);
+            return;
+        }
+        
+        string temp = "";
+        for(int j=i;j<s.size();j++){
+            temp.push_back(s[j]);
+            if(st.count(temp)){
+                temp.push_back(' ');
+                helper(s,st,str + temp,j+1);
+                temp.pop_back();
+            }
+        }
+    }
+
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> st;
+        for(string &str : wordDict) st.insert(str);
+        
+        helper(s,st,"",0);
+        return ans;
+    }
+};
+
+
+Solution 2 : (Using Trie)
+
+class Trie{
+    public:
+    Trie* next[26];
+    bool isEnd;
+    
+    bool search(string &s,Trie* node){
+        for(char ch : s){
+            if(!node->next[ch -'a']) return false;
+            node = node->next[ch - 'a'];
+        }
+
+        return node->isEnd;
+    }
+
+    void addNext(char ch,Trie* node){
+        next[ch - 'a'] = node;
+    }
+};
+class Solution {
+private:
+    Trie* root = new Trie();
+    vector<string> ans;
+
+    void insert(string &s){
+        Trie* node = root;
+
+        for(char ch : s){
+            if(!node->next[ch-'a']) node->addNext(ch,new Trie());
+            node = node->next[ch-'a'];
+        }
+        node->isEnd = true;
+    }
+
+public:
+    void helper(string &s,string str,int i){
+        if(i >= s.size()){
+            str.pop_back();
+            ans.push_back(str);
+            return;
+        }
+        
+        string temp = "";
+        for(int j=i;j<s.size();j++){
+            temp.push_back(s[j]);
+
+            Trie* node = root;
+            if(node->search(temp,node)){
+                temp.push_back(' ');
+                helper(s,str + temp,j+1);
+                temp.pop_back();
+            }
+        }
+    }
+
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        for(string &str : wordDict) insert(str);
+        
+        helper(s,"",0);
+        return ans;
+    }
+};

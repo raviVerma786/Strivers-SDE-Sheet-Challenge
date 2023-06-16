@@ -1,0 +1,37 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/matrix-median_8230735?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution :
+
+// https://youtu.be/63fPPOdIr2c
+pair<int,int> countElements(vector<vector<int>> &matrix,int mid){
+    int m = matrix.size(), n=matrix[0].size();
+    int lesser = 0,other = 0;
+    for(int i = 0;i<m;i++){
+        int idx = lower_bound(matrix[i].begin(),matrix[i].end(),mid) - matrix[i].begin();
+        lesser += idx;
+        other += (n - idx);
+    }
+
+    return {lesser,other};
+}
+
+int getMedian(vector<vector<int>> &matrix)
+{
+    int low = 0,high = 100000;
+    int ans = -1;
+
+    while(low <= high){
+        int mid = (low + high)/2;
+
+        pair<int,int> p = countElements(matrix,mid);
+        int diff = p.second - p.first;
+
+        if(diff < 1) high = mid - 1;
+        else{
+            ans = mid;
+            low = mid + 1;
+        }
+    }
+
+    return ans;
+}

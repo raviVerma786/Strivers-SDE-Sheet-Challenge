@@ -1,0 +1,62 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/merge-k-sorted-arrays_8230770?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution 1 : 
+
+#include <bits/stdc++.h>
+vector<int> mergeKSortedArrays(vector<vector<int>>&kArrays, int k)
+{
+     priority_queue<int,vector<int>,greater<int>> pq;
+     for(vector<int>&v : kArrays){
+         for(int i : v) pq.push(i);
+     }
+
+     vector<int> ans;
+     while(!pq.empty()){
+         ans.push_back(pq.top());
+         pq.pop();
+     }
+
+     return ans;
+}
+
+
+Solution 2 :
+
+#include <bits/stdc++.h>
+
+void merge(vector<int>&ans,vector<int>&v){
+    vector<int> res;
+    int i=0,j=0;
+
+    while(i<ans.size() && j<v.size()){
+        if(ans[i] < v[j]){
+            res.push_back(ans[i]);
+            i++;
+        }
+        else {
+            res.push_back(v[j]);
+            j++;
+        }
+    }
+
+    while(i<ans.size()){
+        res.push_back(ans[i]);
+        i++;
+    }
+
+    while(j < v.size()){
+        res.push_back(v[j]);
+        j++;
+    }
+
+    ans = res;
+}
+vector<int> mergeKSortedArrays(vector<vector<int>>&kArrays, int k)
+{
+     vector<int> ans;
+     for(vector<int>&v : kArrays){
+         merge(ans,v);
+     }
+
+     return ans;
+}

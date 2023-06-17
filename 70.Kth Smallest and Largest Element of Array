@@ -1,0 +1,30 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/kth-smallest-and-largest-element-of-array_8230829?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution 1 : 
+
+#include<bits/stdc++.h>
+vector<int> kthSmallLarge(vector<int> &arr, int n, int k) {
+	priority_queue<int> maxHeap; //for kth min
+	priority_queue<int,vector<int>,greater<int>> minHeap; //for kth max
+    
+	for(int i=0;i<n;i++){
+        maxHeap.push(arr[i]);
+		minHeap.push(arr[i]);
+		
+		if(maxHeap.size() > k){
+			maxHeap.pop();
+			minHeap.pop(); //because both have same size
+		}
+
+	}
+
+	return {maxHeap.top(),minHeap.top()};
+}
+
+Solution 2: Optimal solution
+
+#include<bits/stdc++.h>
+vector<int> kthSmallLarge(vector<int> &arr, int n, int k) {
+	sort(arr.begin(),arr.end());
+	return {arr[k-1],arr[n-k]};
+}

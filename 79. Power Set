@@ -1,0 +1,25 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/power-set_8230797?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+#include <bits/stdc++.h> 
+void subsets(vector<int>&v,vector<int>&temp,vector<vector<int>>&ans,int i){
+    if(i == v.size()){
+        ans.push_back(temp);
+        return;
+    }
+
+    temp.push_back(v[i]);
+    subsets(v, temp, ans, i + 1);
+    temp.pop_back();
+
+    subsets(v, temp, ans, i+1);
+}
+vector<vector<int>> pwset(vector<int>v)
+{
+    vector<vector<int>>ans;
+    vector<int>temp;
+
+    subsets(v, temp, ans, 0);
+    return ans;
+}

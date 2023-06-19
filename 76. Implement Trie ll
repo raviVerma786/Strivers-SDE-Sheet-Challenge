@@ -1,0 +1,69 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/implement-trie-ll_8230840?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+#include <bits/stdc++.h> 
+class Trie{
+    private:
+    Trie* next[26];
+    int startWith,endWith;
+
+    public:
+
+    Trie(){
+        for(int i=0;i<26;i++) next[i] = NULL;
+        startWith = 0;
+        endWith = 0;
+    }
+
+    void insert(string &word){
+        Trie* root = this;
+
+        for(char ch : word){
+            if(!root->next[ch - 'a']){
+                root->next[ch - 'a'] = new Trie();
+            }
+            
+            root->startWith = root->startWith + 1;
+            root = root->next[ch - 'a'];
+        }
+        
+        root->startWith = root->startWith + 1;
+        root->endWith = root->endWith + 1;
+
+    }
+
+    int countWordsEqualTo(string &word){
+        Trie* root = this;
+
+        for(char ch : word){
+            if(!root->next[ch - 'a']) return 0;
+            root = root->next[ch - 'a'];
+        }
+        
+        return root->endWith;
+    }
+
+    int countWordsStartingWith(string &word){
+        Trie* root = this;
+
+        for(char ch : word){
+            if(!root->next[ch - 'a']) return 0;
+            root = root->next[ch - 'a'];
+        }
+        
+        return root->startWith;
+    }
+
+    void erase(string &word){
+        Trie* root = this;
+
+        for(char ch : word){
+            root->startWith = root->startWith - 1;
+            root = root->next[ch - 'a'];
+        }
+        
+        root->startWith = root->startWith - 1;
+        root->endWith = root->endWith - 1;
+    }
+};

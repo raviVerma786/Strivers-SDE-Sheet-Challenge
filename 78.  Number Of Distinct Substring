@@ -2,7 +2,7 @@ Question Link : https://www.codingninjas.com/codestudio/problems/number-of-disti
 https://www.codingninjas.com/codestudio/problems/count-distinct-substrings_985292?utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_tries_videos
 
 Solution : 
-
+//https://youtu.be/RV0QeTyHZxo
 #include <bits/stdc++.h> 
 
 struct Node{

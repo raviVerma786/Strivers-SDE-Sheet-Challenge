@@ -1,0 +1,48 @@
+Question Link : https://www.codingninjas.com/studio/problems/stack-implementation-using-array_8230854?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+#include <bits/stdc++.h> 
+// Stack class.
+class Stack {
+private:
+    vector<int> st;
+    int index,size;
+public:
+    
+    Stack(int capacity) {
+        st.resize(capacity);
+        index = -1;
+
+        size = capacity;
+    }
+
+    void push(int num) {
+        if(index + 1 < size){
+            index++;
+            st[index] = num;
+        }
+    }
+
+    int pop() {
+        if(index == -1) return -1;
+        int ele = st[index];
+        index--;
+
+        return ele;
+    }
+    
+    int top() {
+        if(index == -1) return -1;
+        return st[index];
+    }
+    
+    int isEmpty() {
+        return index == -1;
+    }
+    
+    int isFull() {
+        return index == size;
+    }
+    
+};

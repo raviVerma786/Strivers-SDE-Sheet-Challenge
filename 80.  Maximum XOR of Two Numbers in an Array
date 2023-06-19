@@ -1,0 +1,81 @@
+Question Link : https://www.codingninjas.com/studio/problems/maximum-xor-of-two-numbers-in-an-array_8230852?challengeSlug=striver-sde-challenge&leftPanelTab=0
+https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/
+
+Solution : 
+
+// https://youtu.be/EIhAwfHubE8
+
+#include <bits/stdc++.h> 
+
+//creating trie
+struct Node{
+    Node* next[2];
+
+    bool containsKey(int bit){
+        return next[bit] != NULL;
+    }
+
+    Node* getNext(int bit){
+        return next[bit];
+    }
+    
+    void addNode(int bit,Node* node){
+        next[bit] = node;
+    }
+};
+
+class Trie{
+    private:
+    Node* root;
+
+    public:
+    Trie(){
+        root = new Node();
+    }
+    
+    void insert(int x){
+        Node* node = root;
+        for(int i=31; i>=0; i--){
+            int bit = ((x>>i) & 1);
+
+            if(!node->containsKey(bit)){
+                node->addNode(bit,new Node());
+            }
+
+            node = node->getNext(bit);
+        }
+    }
+
+    int getMaxXor(int x){
+        Node* node = root;
+        int ans = 0;
+
+        for(int i=31;i>=0;i--){
+            int bit = ((x>>i)&1);
+            int oppositeBit = 1 - bit;
+
+            if(node->containsKey(oppositeBit)){
+                ans += (1<<i);
+                node = node->getNext(oppositeBit);
+            }
+            else node = node->getNext(bit);
+        }
+
+        return ans;
+    }
+
+};
+int maximumXor(vector<int> A)
+{
+   Trie trie;
+   for(int num : A){
+       trie.insert(num);
+   }
+
+   int ans = 0;
+   for(int num : A){
+       ans = max(ans,trie.getMaxXor(num));
+   }
+
+   return ans;
+}

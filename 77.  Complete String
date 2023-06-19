@@ -1,0 +1,57 @@
+Question Link : https://www.codingninjas.com/codestudio/problems/complete-string_8230849?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution : 
+
+// https://youtu.be/AWnBa91lThI
+
+#include <bits/stdc++.h>
+
+class Trie{
+    private:
+        Trie* next[26];
+        bool isEnd;
+    public:
+        void insert(string &s){
+            Trie* node = this;
+
+            for(char ch : s){
+                if(!node->next[ch - 'a']){
+                    node->next[ch - 'a'] = new Trie();
+                }
+                node = node->next[ch - 'a'];
+            }
+
+            node->isEnd = true;
+        }
+
+        bool isCompleteString(string& s){
+            Trie* node = this;
+
+            for(char ch : s){
+                node = node->next[ch - 'a'];
+                if(!node->isEnd) return false;
+            }
+
+            return node->isEnd;
+        }
+};
+
+string completeString(int n, vector<string> &a){
+    Trie* root = new Trie();
+
+    for(string &s : a){
+        root->insert(s);
+    }
+    
+    string ans = "";
+    for(string &s : a){
+        if(root->isCompleteString(s)){
+            if(s.size() > ans.size()) ans = s;
+            else if(s.size() == ans.size() && s < ans) ans = s;
+        }
+    }
+    
+    if(ans.size() == 0) ans = "None";
+
+    return ans;
+}

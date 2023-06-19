@@ -2,6 +2,7 @@ Question Link : https://www.codingninjas.com/codestudio/problems/power-set_82307
 
 Solution : 
 
+//https://youtu.be/b7AYbpM5YrE
 #include <bits/stdc++.h> 
 void subsets(vector<int>&v,vector<int>&temp,vector<vector<int>>&ans,int i){
     if(i == v.size()){

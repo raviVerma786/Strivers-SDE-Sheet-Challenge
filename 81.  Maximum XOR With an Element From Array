@@ -1,0 +1,94 @@
+Question Link : https://leetcode.com/problems/maximum-xor-with-an-element-from-array/
+https://www.codingninjas.com/studio/problems/maximum-xor-with-an-element-from-array_8230839?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+// https://youtu.be/Q8LhG9Pi5KM
+
+#include<bits/stdc++.h>
+
+//creating trie
+struct Node{
+    Node* next[2];
+
+    bool containsKey(int bit){
+        return next[bit] != NULL;
+    }
+
+    Node* getNext(int bit){
+        return next[bit];
+    }
+    
+    void addNode(int bit,Node* node){
+        next[bit] = node;
+    }
+};
+
+class Trie{
+    private:
+    Node* root;
+
+    public:
+    Trie(){
+        root = new Node();
+    }
+    
+    void insert(int x){
+        Node* node = root;
+        for(int i=31; i>=0; i--){
+            int bit = ((x>>i) & 1);
+
+            if(!node->containsKey(bit)){
+                node->addNode(bit,new Node());
+            }
+
+            node = node->getNext(bit);
+        }
+    }
+
+    int getMaxXor(int x){
+        Node* node = root;
+        int ans = 0;
+
+        for(int i=31;i>=0;i--){
+            int bit = ((x>>i)&1);
+            int oppositeBit = 1 - bit;
+
+            if(node->containsKey(oppositeBit)){
+                ans = (ans|(1<<i));
+                node = node->getNext(oppositeBit);
+            }
+            else node = node->getNext(bit);
+        }
+
+        return ans;
+    }
+
+};
+vector<int> maxXorQueries(vector<int> &arr, vector<vector<int>> &queries){
+	Trie trie;
+
+	sort(arr.begin(),arr.end());
+
+	vector<vector<int>> q; //{mi,xi,index} from queries
+	for(int i=0;i<queries.size();i++){
+		q.push_back({queries[i][1],queries[i][0],i});
+	}
+    sort(q.begin(),q.end());
+
+	int i = 0;
+	vector<int> ans(q.size(),-1);
+
+	for(vector<int> v : q){
+		while(i < arr.size() && arr[i] <= v[0]){
+			trie.insert(arr[i]);
+			i++;
+		}
+        
+		if(i > 0){//trie is not empty
+			ans[v[2]] = trie.getMaxXor(v[1]);
+		}
+	}
+
+	return ans;
+}

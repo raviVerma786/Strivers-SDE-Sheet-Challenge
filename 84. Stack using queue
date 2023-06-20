@@ -1,0 +1,63 @@
+Question Link : https://www.codingninjas.com/studio/problems/stack-using-queue_8230715?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution :
+
+//https://youtu.be/jDZQKzEtbYQ
+#include <bits/stdc++.h> 
+class Stack {
+	// Define the data members.
+   queue<int> q;
+   queue<int> helper;
+   public:
+    Stack() {
+    }
+
+    /*----------------- Public Functions of Stack -----------------*/
+
+    int getSize() {
+        return (q.size());
+    }
+
+    bool isEmpty() {
+        return (q.empty());
+    }
+
+    void push(int element) {
+        q.push(element);
+    }
+
+    int pop() {
+       if(q.empty()) return -1;
+
+       int n = q.size();
+       for(int i=1;i<n;i++){
+           helper.push(q.front());
+           q.pop();
+       }
+       int ele = q.front();
+       q.pop();
+
+       while(!helper.empty()){
+           q.push(helper.front());
+           helper.pop();
+       }
+
+       return ele;
+    }
+
+    int top() {
+       int n = q.size(),ele = -1;
+       for(int i=0;i<n;i++){
+           ele = q.front();
+           helper.push(ele);
+           q.pop();
+       }
+
+       while(!helper.empty()){
+           q.push(helper.front());
+           helper.pop();
+       }
+
+       return ele;
+    }
+};

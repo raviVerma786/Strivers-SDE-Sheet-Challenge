@@ -1,0 +1,86 @@
+Question Link : https://leetcode.com/problems/lru-cache/
+https://www.codingninjas.com/studio/problems/lru-cache-implementation_8230697?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/xDEuM5qa0zg
+//declaring doubly linked list
+class Node{
+    public:
+        int key,val;
+        Node* next , *prev;
+        Node(int k,int v){
+            key = k;
+            val = v;
+            next = NULL;
+            prev = NULL;
+        }
+};
+
+class LRUCache
+{
+private:
+    Node* head = new Node(-1,-1);
+    Node* tail = new Node(-1,-1);
+    int cap;
+    unordered_map<int,Node*> mp;
+
+    // adding one method to add nodes
+    void addNode(Node* newNode){
+        Node* temp = head->next;
+        newNode->next = temp;
+        newNode->prev = head;
+        head->next = newNode;
+        temp->prev = newNode;
+    }
+
+    //adding method to delete nodes
+    void deleteNode(Node* delNode){
+        Node* right = delNode->next;
+        Node* left = delNode->prev;
+
+        left->next = right;
+        right->prev = left;
+    }
+public:
+    LRUCache(int capacity)
+    {
+        cap = capacity;
+        head->next = tail;
+        tail->prev = head;
+    }
+
+    int get(int key)
+    {
+        if(mp.count(key)){
+            Node* resNode = mp[key];
+            int res = resNode->val;
+            mp.erase(key);
+            deleteNode(resNode);
+            addNode(resNode);
+            mp[key] = head->next;
+            return res;
+        }
+
+        return -1;
+    }
+
+    void put(int key, int value)
+    {
+        if(mp.count(key)){
+            Node* curr = mp[key];
+            mp.erase(key);
+            deleteNode(curr);
+        }
+
+        if(mp.size() == cap){
+            mp.erase(tail->prev->key);
+            deleteNode(tail->prev);
+        }
+
+        addNode(new Node(key,value));
+        mp[key] = head->next;
+    }
+};

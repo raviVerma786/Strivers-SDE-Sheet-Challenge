@@ -28,3 +28,34 @@ void sortStack(stack<int> &stack)
     
 	insert(stack,val);
 }
+
+
+Solution (GFG solution ):
+
+void insert(stack<int>&s,int ele){
+    if(s.empty() || s.top() <= ele){
+        s.push(ele);
+        return;
+    }
+    
+    int val = s.top();
+    s.pop();
+    insert(s,ele);
+    s.push(val);
+}
+
+void helper(stack<int>&s){
+    if(s.empty()) return;
+    
+    int ele = s.top();
+    s.pop();
+    
+    helper(s);
+    
+    insert(s,ele);
+}
+
+void SortedStack :: sort()
+{
+   helper(s);
+}

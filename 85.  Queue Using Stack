@@ -1,0 +1,111 @@
+Question Link ; https://www.codingninjas.com/studio/problems/day-25-queue-using-stack_8230722?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution 1 : 
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/3Et9MrMc02A
+class Queue {
+    // Define the data members(if any) here.
+    stack<int> st;
+    stack<int> helper;
+    public:
+    Queue() {
+        // Initialize your data structure here.
+    }
+
+    void enQueue(int val) {
+        // Implement the enqueue() function.
+        if(st.empty()) st.push(val);
+        else{
+            while(!st.empty()){
+                helper.push(st.top());
+                st.pop();
+            }
+
+            st.push(val);
+
+            while(!helper.empty()){
+                st.push(helper.top());
+                helper.pop();
+            }
+        }
+    }
+
+    int deQueue() {
+      // Implement the dequeue() function.
+      if (st.empty()) return -1;
+      
+      int ele = st.top();
+      st.pop();
+
+      return ele;
+    }
+
+    int peek() {
+       if(st.empty()) return -1;
+       return st.top();
+    }
+
+    bool isEmpty() {
+        // Implement the isEmpty() function here.
+        return st.empty();
+    }
+};
+
+
+Solution 2 : (optimal solution)
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/3Et9MrMc02A
+class Queue {
+    // Define the data members(if any) here.
+    stack<int> input;
+    stack<int> output;
+    public:
+    Queue() {
+        // Initialize your data structure here.
+    }
+
+    void enQueue(int val) {
+        input.push(val);
+    }
+
+    int deQueue() {
+      if(output.empty() && input.empty()) return -1;
+      if(!output.empty()){
+          int ele = output.top();
+          output.pop();
+
+          return ele;
+      }
+
+      while(!input.empty()){
+          output.push(input.top());
+          input.pop();
+      }
+
+      int ele = output.top();
+      output.pop();
+
+      return ele;
+    }
+
+    int peek() {
+       if(output.empty() && input.empty()) return -1;
+       if(!output.empty()) return output.top();
+
+      while(!input.empty()){
+          output.push(input.top());
+          input.pop();
+      }
+
+      return output.top();
+    }
+
+    bool isEmpty() {
+        // Implement the isEmpty() function here.
+        return (input.empty() && output.empty());
+    }
+};

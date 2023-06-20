@@ -1,0 +1,30 @@
+Question Link : https://www.codingninjas.com/studio/problems/sort-a-stack_8230787?challengeSlug=striver-sde-challenge&leftPanelTab=1
+https://practice.geeksforgeeks.org/problems/sort-a-stack/1
+Solution : 
+
+#include <bits/stdc++.h> 
+
+// https://www.youtube.com/watch?v=MOGBRkkOhkY&ab_channel=AdityaVerma
+void insert(stack<int>&stack,int ele){
+	if(stack.empty() || stack.top() <= ele){
+		stack.push(ele);
+		return;
+	}
+
+	int val = stack.top();
+	stack.pop();
+	insert(stack,ele);
+	stack.push(val);
+}
+
+void sortStack(stack<int> &stack)
+{
+	if(stack.empty()) return;
+
+	int val = stack.top();
+	stack.pop();
+
+	sortStack(stack);
+    
+	insert(stack,val);
+}

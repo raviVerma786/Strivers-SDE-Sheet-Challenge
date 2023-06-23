@@ -1,0 +1,68 @@
+Question Link : https://leetcode.com/problems/largest-rectangle-in-histogram/description/
+https://www.codingninjas.com/studio/problems/largest-rectangle-in-a-histogram_8230792?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Videos : https://www.youtube.com/watch?v=X0X6G-eWgQ8&ab_channel=takeUforward
+        https://www.youtube.com/watch?v=jC_cWLy7jSI&ab_channel=takeUforward
+        
+Solution 1 : O(n) space and O(n) time
+
+ #include<bits/stdc++.h>
+ int largestRectangle(vector < int > & heights) {
+   int n = heights.size();
+   vector<int> leftLimit(n,-1),rightLimit(n,n);
+
+   //setting left limit
+   stack<int> st;
+   for(int i=0;i<n;i++){
+     while(!st.empty() && heights[i] <= heights[st.top()]){
+       st.pop();
+     }
+     if(!st.empty()) leftLimit[i] = st.top();
+     st.push(i);
+   }
+
+   while(!st.empty()) st.pop();
+
+   //setting right limit
+   for(int i=n-1;i>=0;i--){
+     while(!st.empty() && heights[i] <= heights[st.top()]){
+       st.pop();
+     }
+
+     if(!st.empty()) rightLimit[i] = st.top();
+     st.push(i);
+   }
+
+   //calculating ans
+   int ans = 0;
+   for(int i=0;i<n;i++){
+     ans = max(ans,heights[i]*(rightLimit[i] - leftLimit[i] - 1));
+   }
+   return ans;
+ }
+ 
+Solution 2 :optimised solution
+
+//https://www.youtube.com/watch?v=jC_cWLy7jSI&ab_channel=takeUforward
+ #include<bits/stdc++.h>
+ int largestRectangle(vector < int > & heights) {
+   int n = heights.size();
+  
+   stack<int> st;
+
+   int ans = 0;
+   for(int right=0;right<=n;right++){
+     int hgt = (right==n) ? 0 : heights[right];
+
+     while(!st.empty() && heights[st.top()] >= hgt){
+       int h = heights[st.top()];
+       st.pop();
+      
+       int left = (st.empty() ? -1 :st.top());
+       ans = max(ans,h*(right - left - 1));
+     }
+
+     st.push(right);
+   }
+   return ans;
+ }

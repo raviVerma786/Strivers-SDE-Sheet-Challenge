@@ -1,0 +1,53 @@
+Question Link : https://www.codingninjas.com/studio/problems/min-stack_8230861?challengeSlug=striver-sde-challenge&leftPanelTab=1
+https://leetcode.com/problems/min-stack/
+
+Solution : 
+//https://youtu.be/V09NfaGf2ao
+
+#include <bits/stdc++.h> 
+// Implement class for minStack.
+class minStack
+{
+	stack<pair<int,int>> st; //{ele,minele till now}
+	public:
+		
+		// Constructor
+		minStack() 
+		{ 
+			// Write your code here.
+		}
+		
+		// Function to add another element equal to num at the top of stack.
+		void push(int num)
+		{
+			if(st.empty()) st.push({num,num});
+			else st.push({num,min(num,st.top().second)});
+		}
+		
+		// Function to remove the top element of the stack.
+		int pop()
+		{
+			// Write your code here.
+			if(st.empty()) return -1;
+
+			int ele = st.top().first;
+			st.pop();
+
+			return ele;
+		}
+		
+		// Function to return the top element of stack if it is present. Otherwise return -1.
+		int top()
+		{
+			if(st.empty()) return -1;
+			return st.top().first;
+		}
+		
+		// Function to return minimum element of stack if it is present. Otherwise return -1.
+		int getMin()
+		{
+			// Write your code here.
+			if(st.empty()) return -1;
+			return st.top().second;
+		}
+};

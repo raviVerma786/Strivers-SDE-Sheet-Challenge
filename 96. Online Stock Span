@@ -1,0 +1,25 @@
+Question Link : https://leetcode.com/problems/online-stock-span/
+https://www.codingninjas.com/studio/problems/online-stock-span_8230843?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution : 
+
+#include <bits/stdc++.h> 
+
+//based on previous greater element
+vector<int> findSpans(vector<int> &price) {
+    stack<int> st;
+    vector<int> ans;
+
+    for (int i = 0; i < price.size(); i++) {
+        while(!st.empty() && price[st.top()] <= price[i]){
+            st.pop();
+        }
+
+        if(st.empty()) ans.push_back(i+1);
+        else ans.push_back(i - st.top());
+
+        st.push(i);
+    }
+
+    return ans;
+}

@@ -1,0 +1,15 @@
+Question link : https://www.codingninjas.com/studio/problems/implement-atoi-function_8230776?challengeSlug=striver-sde-challenge&leftPanelTab=0
+https://leetcode.com/problems/string-to-integer-atoi/description/
+Solution : 
+
+#include <bits/stdc++.h> 
+int atoi(string str) {
+    int ans = 0;
+    bool isNegative = false;
+    for(char ch : str){
+        if(ch >='0' && ch <='9') ans = ans*10 + (ch - '0');
+        if(ch == '-') isNegative = true;
+    }
+
+    return isNegative ? (ans * -1) : ans;
+}

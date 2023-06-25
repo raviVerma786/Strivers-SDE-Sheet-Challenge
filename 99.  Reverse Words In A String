@@ -1,0 +1,46 @@
+Question Link : https://leetcode.com/problems/reverse-words-in-a-string/description/
+https://www.codingninjas.com/studio/problems/reverse-words-in-a-string_8230698?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+#include<bits/stdc++.h>
+
+void reverse(string &s){
+	int n = s.size();
+	for(int i=0;i<n/2;i++){
+		char ch = s[i];
+		s[i] = s[n-i-1];
+		s[n-i-1] = ch;
+	}
+}
+
+string reverseString(string &str){
+		string ans = "";
+		string temp = "";
+		
+		int n = str.size();
+		for(int i=n-1;i>=0;i--){
+			char ch = str[i];
+			
+			if(ch == ' '){
+				if(temp.size() == 0) continue;
+				else{
+					reverse(temp);
+					ans += temp;
+					ans.push_back(' ');
+					temp = "";
+				}
+			}
+			else{
+				temp.push_back(ch);
+			}
+		}
+
+	    if(temp.size() > 0){
+			reverse(temp);
+			ans += temp;
+		}
+		else ans.pop_back();//last added extra space
+
+		return ans;
+}

@@ -1,0 +1,64 @@
+Question Link : https://leetcode.com/problems/longest-common-prefix/description/
+https://www.codingninjas.com/studio/problems/longest-common-prefix_8230847?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution : 
+#include<bits/stdc++.h>
+
+struct Node{
+    Node* next[26];
+    int cnt = 0;
+
+    bool containsKey(char ch){
+        return next[ch - 'a'] != NULL;
+    }
+
+    Node* getNext(char ch){
+        return next[ch - 'a'];
+    }
+
+    void addNode(char ch , Node* node){
+        next[ch - 'a'] = node;
+    }
+};
+
+struct Trie{
+    Node* root = new Node();
+
+    void insert(string &s,string &maxLenPrefix,bool isFirst){
+        Node* node = root;
+        string prefix = "";
+
+        for(char ch : s){
+            if(!node->containsKey(ch)){
+                if(isFirst) node->addNode(ch, new Node());
+                else {
+                    maxLenPrefix = prefix;
+                    for(int i=0;i<26;i++){
+                        node->next[i] = NULL;
+                    }
+                    return;
+                }
+            }
+            prefix.push_back(ch);
+            node = node->getNext(ch);
+        }
+
+        maxLenPrefix = prefix;
+    }
+};
+
+string longestCommonPrefix(vector<string> &arr, int n)
+{
+   string maxLenPrefix = arr[0];
+   Trie* trie = new Trie();
+   
+   trie->insert(arr[0],maxLenPrefix,true);
+
+   for(int i=1;i<n;i++){
+       trie->insert(arr[i], maxLenPrefix,false);
+   }
+
+   return maxLenPrefix;
+}
+
+

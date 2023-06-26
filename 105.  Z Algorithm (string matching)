@@ -1,0 +1,84 @@
+Question Link : https://www.codingninjas.com/studio/problems/z-algorithm_8230818?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution 1 : (using KMP Algorithm)
+
+#include<bits/stdc++.h>
+
+//Using KMP Algorithm
+vector<int> buildPrefix(string &s){
+	int n = s.size();
+	vector<int> prefix(n,0);
+
+	for(int i=1;i<n;i++){
+		int j = prefix[i-1];
+
+		while(j>0 && s[i] != s[j]) j= prefix[j-1];
+
+		if(s[i] == s[j]) j++;
+
+		prefix[i] = j;
+	}
+
+	return prefix;
+}
+
+int zAlgorithm(string s, string p, int n, int m)
+{
+	vector<int> prefix = buildPrefix(p);
+
+	int cnt = 0;
+	int i=0,j=0;
+	while(i < n){
+		if(s[i] == p[j]){
+			i++;
+			j++;
+		}
+		else{
+			if(j > 0) j = prefix[j-1];
+			else i++;
+		}
+
+		if(j == p.size()){
+			cnt++;
+			j = prefix[j-1];
+		}
+	}
+
+	return cnt;
+}
+
+
+Solution 2 : (Using Z - algorithm)
+#include<bits/stdc++.h>
+
+// https://www.youtube.com/watch?v=cx4MEJZu9kk&ab_channel=Let%27sPracticeTogether
+int zAlgorithm(string s, string p, int n, int m)
+{
+	string str = p + "#" + s;
+	vector<int> z;
+
+	int i = 0;
+	while(i < str.size()){
+		if(i<m) z.push_back(0);
+		else{
+			int left = 0, right = i, matchingLen = 0;
+			while(right < str.size() && str[left] == str[right]){
+				left++;
+				right++;
+				matchingLen++;
+			}
+
+			z.push_back(matchingLen);
+		}
+
+		i++;
+	}
+    
+	//now count occurence of pattern length in z array
+	int cnt = 0;
+	for(int i : z){
+		cnt += (i == m);
+	}
+
+	return cnt;
+}

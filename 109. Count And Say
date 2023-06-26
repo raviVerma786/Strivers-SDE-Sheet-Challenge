@@ -1,0 +1,38 @@
+Question Link : https://leetcode.com/problems/count-and-say/description/
+https://www.codingninjas.com/studio/problems/count-and-say_8230807?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution : 
+
+#include <bits/stdc++.h> 
+
+string helper(string s){
+        string nextStr = "";
+        int i=0;
+        while(i < s.size()){
+            char ch = s[i];
+            int cnt = 1;
+            i++;
+            
+            while(s[i] == ch){
+                cnt++;
+                i++;
+            }
+            
+            nextStr += (cnt + '0');
+            nextStr += ch;
+        }
+        
+        return nextStr;
+}
+
+string writeAsYouSpeak(int n) 
+{
+	string ans = "1";
+        n--;
+        
+	while(n--){
+		ans = helper(ans);
+	}
+        
+	return ans;
+}

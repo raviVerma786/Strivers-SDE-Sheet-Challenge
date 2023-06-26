@@ -51,24 +51,44 @@ int zAlgorithm(string s, string p, int n, int m)
 Solution 2 : (Using Z - algorithm)
 #include<bits/stdc++.h>
 
-// https://www.youtube.com/watch?v=cx4MEJZu9kk&ab_channel=Let%27sPracticeTogether
+//https://www.youtube.com/watch?v=5CEU5okQLG4&ab_channel=CodingNinjas
 int zAlgorithm(string s, string p, int n, int m)
 {
 	string str = p + "#" + s;
-	vector<int> z;
+	int k = str.size();
 
-	int i = 0;
+	vector<int> z(k,0);
+
+	int i = 0,l=0,r=0;
 	while(i < str.size()){
-		if(i<m) z.push_back(0);
-		else{
-			int left = 0, right = i, matchingLen = 0;
-			while(right < str.size() && str[left] == str[right]){
-				left++;
-				right++;
-				matchingLen++;
+		if(i > r){
+			//resetting l and r
+			l = i;
+			r = i;
+            
+			// calculating matching length and updating r
+			while(r < str.size() && str[r - l] == str[r]){
+				r++;
 			}
+		    
+			r--;
 
-			z.push_back(matchingLen);
+			z[i] = r - l + 1; //matching length
+		}
+		else{
+			int pos = i - l;
+			if(z[pos] + i <= r){
+				z[i] = z[pos]; 
+			}
+			else{
+				l = i;
+
+				while(r < str.size() && str[r - l] == str[r]) r++;
+
+				r--;
+
+				z[i] = r - l + 1;
+			}
 		}
 
 		i++;

@@ -1,0 +1,59 @@
+Question Link : https://www.codingninjas.com/studio/problems/rabin-carp_8230831?challengeSlug=striver-sde-challenge&leftPanelTab=1
+https://leetcode.com/problems/repeated-string-match/description/
+
+Solution : (Using Rabin Karp algorithm)
+
+// https://www.youtube.com/watch?v=bmy5RrkgVqQ&ab_channel=ShashwatTiwari
+// https://www.youtube.com/watch?v=BQ9E-2umSWc&ab_channel=Techdose
+//https://www.youtube.com/watch?v=lhhqbGH7Pao&ab_channel=ApnaCollege
+
+#include<bits/stdc++.h>
+
+int mod = 1e9 + 7;
+long long calculateHash(string &s,long long &msbPower){
+	long long base = 1;
+	long long value = 0;
+
+	for(int i=s.size()-1;i>=0;i--){
+		msbPower = base;
+		value = (value +  (base * ((s[i] - 'a') + 1)%mod)) % mod;
+		base = (base * 26)%mod;
+	}
+
+	return value;
+}
+
+vector<int> stringMatch(string text, string pattern) {
+	if(text.size() < pattern.size()) return {};
+    
+	long long msbPower = 0;
+	long long hashValue = calculateHash(pattern,msbPower);
+	int k = pattern.size();
+    
+	string temp = text.substr(0,k);
+	long long textHash = calculateHash(temp,msbPower);
+
+	vector<int> ans;
+	if(temp == pattern) ans.push_back(1);
+
+	for(int i=k;i<text.size();i++){
+		textHash = (textHash - (((text[i-k] - 'a') + 1) * msbPower)%mod + mod) % mod;
+		textHash = (textHash * 26)%mod;
+		textHash = (textHash + ((text[i] - 'a') + 1))%mod;
+        
+		// cout<<textHash<<" "<<hashValue<<endl;
+		if(textHash == hashValue){
+			int j = i - k + 1, l = 0;
+			while(l < k && pattern[l] == text[j]){
+				l++;
+				j++;
+			}
+
+			if(l == k) ans.push_back(i-k+2);
+		} 
+	}
+
+	return ans;
+
+}
+

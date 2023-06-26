@@ -1,0 +1,71 @@
+Question Link : https://www.codingninjas.com/studio/problems/left-view-of-a-binary-tree_8230757?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution 1 (Iterative): 
+
+#include <bits/stdc++.h> 
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    template <typename T>
+    class TreeNode {
+       public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this->data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+
+vector<int> getLeftView(TreeNode<int> *root)
+{
+    vector<int> ans;
+
+    if(!root) return ans;
+
+    queue<TreeNode<int>*> q;
+    q.push(root);
+
+    while(!q.empty()){
+        ans.push_back(q.front()->data);
+
+        int n = q.size();
+        for(int i=0;i<n;i++){
+            TreeNode<int>* node = q.front();
+            q.pop();
+
+            if(node->left) q.push(node->left);
+            if(node->right)q.push(node->right);
+        }
+    }
+
+    return ans;
+}
+
+
+Solution 2 : (Recursive):
+
+#include <bits/stdc++.h> 
+
+// https://youtu.be/KV4mRzTjlAk
+
+void helper(TreeNode<int>*root,vector<int>&ans,int level){
+    if(!root) return;
+
+    if(ans.size() == level) ans.push_back(root->data);
+
+    helper(root->left,ans,level + 1);
+    helper(root->right,ans,level + 1);
+}
+vector<int> getLeftView(TreeNode<int> *root)
+{
+    vector<int> ans;
+    helper(root,ans,0);
+    return ans;
+}

@@ -1,0 +1,25 @@
+Question Link : https://www.codingninjas.com/studio/problems/tree-traversals_8230775?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+#include <bits/stdc++.h> 
+void traversal(BinaryTreeNode<int>*root,vector<int>&preorder,vector<int>&inorder,vector<int>&postorder){
+    if(!root) return;
+
+    preorder.push_back(root->data);
+
+    traversal(root->left,preorder,inorder,postorder);
+
+    inorder.push_back(root->data);
+
+    traversal(root->right,preorder,inorder,postorder);
+
+    postorder.push_back(root->data);
+}
+
+vector<vector<int>> getTreeTraversal(BinaryTreeNode<int> *root){
+    vector<int>preorder,inorder,postorder;
+    traversal(root,preorder,inorder,postorder);
+
+    return {inorder,preorder,postorder};
+}

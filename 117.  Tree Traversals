@@ -2,6 +2,7 @@ Question Link : https://www.codingninjas.com/studio/problems/tree-traversals_823
 
 Solution : 
 
+//https://youtu.be/ySp2epYvgTE
 #include <bits/stdc++.h> 
 void traversal(BinaryTreeNode<int>*root,vector<int>&preorder,vector<int>&inorder,vector<int>&postorder){
     if(!root) return;

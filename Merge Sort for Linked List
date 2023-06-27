@@ -1,0 +1,66 @@
+Question Link : https://practice.geeksforgeeks.org/problems/sort-a-linked-list/1?utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article
+
+Solution : 
+
+class Solution{
+  public:
+    //Function to sort the given linked list using Merge Sort.
+    Node* getMid (Node* head)
+{
+    Node* slow = head;
+    Node* fast = head->next;
+    while (fast && fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+
+Node* merge (Node* f,Node* s)
+{
+    if (!f)
+        return s;
+    
+    if (!s)
+        return f;
+    
+    Node* temp = new Node(0);
+    Node* head = temp;
+    while (f && s)
+    {
+        if (f->data < s->data)
+        {
+            temp->next = f;
+            f = f->next;
+        }
+        else
+        {
+            temp->next = s;
+            s = s->next;
+        }
+        temp = temp->next;
+    }
+    
+    if (f)
+        temp->next = f;
+    else
+        temp->next = s;
+    return head->next;
+}
+
+    Node* mergeSort(Node* head) {
+        // your code here
+    if (!head || !head->next)
+        return head;
+    Node* mid = getMid (head);
+    Node* temp = mid->next;
+    if (mid != NULL)
+         mid->next = nullptr;
+    
+    Node* f = mergeSort (head);
+    Node* s = mergeSort (temp);
+    
+    return merge (f,s);
+    }
+};

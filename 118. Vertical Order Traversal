@@ -68,3 +68,41 @@ public:
         return ans;
     }
 };
+
+
+
+Solution (Striver's Solution): 
+
+// https://youtu.be/q_a6lpbKJdw
+class Solution {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        map<int,map<int,multiset<int>>> mp; //mp[col][row] => elements ; this will store column elements in row wise order
+        queue<pair<TreeNode*,pair<int,int>>> q; //{node,row,col}
+
+        q.push({root,{0,0}});
+        while(!q.empty()){
+            TreeNode* node = q.front().first;
+            int row = q.front().second.first, col = q.front().second.second;
+            q.pop();
+
+            mp[col][row].insert(node->val);
+
+            if(node->left) q.push({node->left,{row+1,col-1}});
+            if(node->right) q.push({node->right,{row+1,col+1}});
+        }
+        vector<vector<int>> ans;
+
+        //storing elements of same column
+        for(auto p : mp){
+            vector<int> colElements;
+            for(auto v : p.second){
+                colElements.insert(colElements.end(),v.second.begin(),v.second.end());
+            }
+
+            ans.push_back(colElements);
+        }
+
+        return ans;
+    }
+};

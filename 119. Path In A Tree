@@ -1,0 +1,25 @@
+Question Link : https://www.codingninjas.com/studio/problems/path-in-a-tree_8230860?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+// https://youtu.be/fmflMqVOC7k
+void helper(TreeNode<int>*root,int target,vector<int>&temp,vector<int>&ans){
+	if(!root) return;
+	if(root->data == target){
+		ans = temp;
+		ans.push_back(target);
+		return;
+	}
+
+	temp.push_back(root->data);
+	helper(root->left,target,temp,ans);
+	helper(root->right,target,temp,ans);
+	temp.pop_back();
+}
+vector<int> pathInATree(TreeNode<int> *root, int x)
+{
+    vector<int> temp,ans;
+	helper(root,x,temp,ans);
+
+	return ans;
+}

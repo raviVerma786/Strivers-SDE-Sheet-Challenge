@@ -1,0 +1,70 @@
+Question Link : https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/
+https://www.codingninjas.com/studio/problems/vertical-order-traversal_8230758?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution (code studio) : 
+
+// https://youtu.be/q_a6lpbKJdw
+void helper(TreeNode<int>*root,int row,int col,map<pair<int,int>,vector<int>>&mp){
+    if(!root) return;
+
+    mp[{row,col}].push_back(root->data);
+    helper(root->left,row+1,col-1,mp);
+    helper(root->right,row+1,col+1,mp);
+}
+
+vector<int> verticalOrderTraversal(TreeNode<int> *root)
+{
+   map<pair<int,int>,vector<int>>mp; //mp[{row,col}] => elements in [row][col] position.This map is used so that vertical order traversal can be done row wise
+   helper(root,0,0,mp);
+
+   map<int,vector<int>> colElements; //colElements[col]=>elements in that col ; this map stores elements in same column from top to bottom
+   for(auto p : mp){
+       for(int i : p.second){
+           colElements[p.first.second].push_back(i);
+       }
+   }
+
+   vector<int> ans;
+   for(auto p : colElements){
+       ans.insert(ans.end(),p.second.begin(),p.second.end());
+   }
+
+   return ans;
+}
+
+
+Solution (Leetcode) : 
+
+class Solution {
+public:
+    map<pair<int,int>,multiset<int>> mp;
+    void helper(TreeNode* root,int r,int c){
+        if(!root) return;
+        
+        mp[{c,r}].insert(root->val);
+        helper(root->left,r+1,c-1);
+        helper(root->right,r+1,c+1);
+        
+        return;
+    }
+    
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        mp.clear();
+        vector<vector<int>> ans;
+        
+        helper(root,0,0);
+        
+        //storing elements of same column
+        map<int,vector<int>> mc;
+        for(auto p : mp){
+            for(int i : p.second){
+                mc[p.first.first].push_back(i);
+            }
+        }
+        
+        for(auto p : mc){
+            ans.push_back(p.second);
+        }
+        return ans;
+    }
+};

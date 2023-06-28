@@ -1,0 +1,44 @@
+Question Link : https://leetcode.com/problems/diameter-of-binary-tree/description/
+https://www.codingninjas.com/studio/problems/diameter-of-binary-tree_8230762?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution 1 : (Brute force) Accepted solution : O(n*n)
+
+#include<bits/stdc++.h>
+int height(TreeNode<int>* root){
+    if(!root) return 0;
+    return 1 + max(height(root->left),height(root->right));
+}
+int diameterOfBinaryTree(TreeNode<int> *root)
+{
+	if(!root) return 0;
+    
+    int d = height(root->left) + height(root->right);
+    int d1 = diameterOfBinaryTree(root->left);
+    int d2 = diameterOfBinaryTree(root->right);
+
+    return max(d,max(d1,d2));
+}
+
+
+Solution 2 : (Striver's Solution) O(n)
+
+//https://youtu.be/Rezetez59Nk
+
+#include<bits/stdc++.h>
+int height(TreeNode<int>* root,int& diameter){
+    if(!root) return 0;
+
+    int leftHeight = height(root->left,diameter);
+    int rightHeight = height(root->right,diameter);
+
+    diameter = max(diameter,leftHeight + rightHeight);
+
+    return 1 + max(leftHeight,rightHeight);
+}
+
+int diameterOfBinaryTree(TreeNode<int> *root)
+{
+	  int diameter = 0;
+    height(root,diameter);
+    return diameter;
+}

@@ -1,0 +1,66 @@
+Question Link : https://leetcode.com/problems/maximum-width-of-binary-tree/
+https://www.codingninjas.com/studio/problems/maximum-width-in-binary-tree_8230710?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+
+Solution (Leetcode) : 
+
+// https://youtu.be/ZbybYvcVLks
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        if(!root) return 0;
+        int ans = 0;
+        queue<pair<TreeNode*,int>>q;
+        q.push({root,0});
+        while(!q.empty()){
+            int size = q.size();
+            long long min = q.front().second;
+            long long first,last;
+            for(int i=0;i<size;i++){
+                long long curr_id = q.front().second - min;
+                if(i==0) first = curr_id;
+                if(i == size - 1) last = curr_id;
+                if(q.front().first->left) q.push({q.front().first->left,curr_id*2 + 1});
+                if(q.front().first->right) q.push({q.front().first->right,curr_id*2 + 2});
+                q.pop();
+            }
+            ans = max(ans + 0LL,last - first + 1);
+        }
+        return ans;
+    }
+};
+
+
+
+Solution (Code Studio) : 
+
+// https://youtu.be/ZbybYvcVLks
+int getMaxWidth(TreeNode<int> *root)
+{
+    //level order traversal
+    if(!root) return 0;
+
+    queue<TreeNode<int>*> q;
+    q.push(root);
+    
+    int ans = 0;
+    while(!q.empty()){
+        int n = q.size();
+        ans = max(ans,n);
+
+        while(n--){
+            TreeNode<int>* node = q.front();
+            q.pop();
+
+            if(node->left){
+                q.push(node->left);
+            }
+
+            if(node->right){
+                q.push(node->right);
+            }
+        }
+    }
+
+    return ans;
+}

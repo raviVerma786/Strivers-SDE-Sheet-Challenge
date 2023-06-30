@@ -1,0 +1,15 @@
+Question Link : https://leetcode.com/problems/symmetric-tree/
+https://www.codingninjas.com/studio/problems/symmetric-tree_8230686?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+bool isSame(BinaryTreeNode<int>*root1,BinaryTreeNode<int>*root2){
+    if(!root1 && !root2) return true;
+    if((!root1 && root2)||(!root2 && root1)||(root1->data != root2->data)) return false;
+
+    return isSame(root1->left,root2->right) && isSame(root1->right,root2->left);
+}
+bool isSymmetric(BinaryTreeNode<int>* root)
+{
+       return isSame(root,root);
+}

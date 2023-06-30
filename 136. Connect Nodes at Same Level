@@ -1,0 +1,29 @@
+Question Link : https://www.codingninjas.com/studio/problems/connect-nodes-at-same-level_8230790?challengeSlug=striver-sde-challenge&leftPanelTab=0
+https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+
+Solution : 
+
+void connectNodes(BinaryTreeNode< int > *root) {
+    queue<BinaryTreeNode<int>*> q;
+    q.push(root);
+
+    while(!q.empty()){
+        int n = q.size();
+
+        BinaryTreeNode<int>* node;
+
+        for(int i=0;i<n;i++){
+            BinaryTreeNode<int>*temp = q.front();
+            q.pop();
+
+            if(i==0) node = temp;
+            else{
+                node->next = temp;
+                node = node->next;
+            }
+
+            if(temp->left) q.push(temp->left);
+            if(temp->right) q.push(temp->right);
+        }
+    }
+}

@@ -1,0 +1,25 @@
+Question Link : https://leetcode.com/problems/flatten-binary-tree-to-linked-list/description/
+https://www.codingninjas.com/studio/problems/flatten-binary-tree-to-linked-list_8230817?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution : (Most optimal) O(n) time and O(1) space (video is must)
+
+// https://youtu.be/sWf7k1x9XR4
+
+TreeNode<int> *flattenBinaryTree(TreeNode<int> *root)
+{
+   TreeNode<int>* head = root;
+   TreeNode<int>* curr = root,*prev = NULL;
+
+   while(curr){
+       if(curr->left){
+           prev = curr->left;
+           while(prev->right) prev = prev->right;
+
+           prev->right = curr->right;
+           curr->right = curr->left;
+       }
+       curr = curr->right;
+   }
+
+   return head;
+}

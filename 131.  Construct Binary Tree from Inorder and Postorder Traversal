@@ -1,0 +1,27 @@
+Question Link : https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+https://www.codingninjas.com/studio/problems/construct-binary-tree-from-inorder-and-postorder-traversal_8230837?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution : 
+
+//  https://youtu.be/LgLRTaEMRVc
+TreeNode<int>* helper(vector<int>&postOrder,vector<int>&inOrder,unordered_map<int,int>&mp,
+int ps,int pe,int is,int ie){
+     if(ps > pe || is > ie) return NULL;
+
+     TreeNode<int>* root = new TreeNode<int>(postOrder[pe]);
+     int idx = mp[postOrder[pe]];
+
+     root->left = helper(postOrder,inOrder,mp,ps,ps + (idx - is) - 1,is,idx-1);
+     root->right = helper(postOrder,inOrder,mp,ps + (idx - is),pe-1,idx+1,ie);
+
+     return root;
+}
+TreeNode<int>* getTreeFromPostorderAndInorder(vector<int>& postOrder, vector<int>& inOrder) 
+{
+	unordered_map<int,int> mp;
+     for(int i=0;i<inOrder.size();i++){
+          mp[inOrder[i]] = i;
+     }
+
+     return helper(postOrder,inOrder,mp, 0,postOrder.size()-1,0,inOrder.size()-1);
+}

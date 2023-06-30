@@ -1,0 +1,82 @@
+Question Link : https://leetcode.com/problems/binary-tree-maximum-path-sum/description/
+https://www.codingninjas.com/studio/problems/maximum-path-sum-between-two-leaves_8230713?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution 1: Brute force O(n*n)
+
+long long maxPathSum(TreeNode<int>* node){
+    if(!node) return 0;
+
+    return node->val + max(maxPathSum(node->left),maxPathSum(node->right));
+}
+
+void traverse(TreeNode<int>* root,long long& ans,int& cnt){
+    if(!root) return;
+    if(!root->left && !root->right) cnt++;
+
+    TreeNode<int>* temp = root;
+    ans = max(ans, root->val + maxPathSum(temp->left) + maxPathSum(temp->right));
+
+    traverse(root->left,ans,cnt);
+    traverse(root->right,ans,cnt);
+}
+
+long long int findMaxSumPath(TreeNode<int> *root)
+{
+    long long ans = 0;
+    int cnt = 0;
+    traverse(root, ans, cnt);
+
+    if(cnt < 2) return -1;
+    return ans;
+}
+
+
+Solution 2 : Optimal O(N)
+
+// https://youtu.be/WszrfSwMz58
+long long maxPathSum(TreeNode<int>* root,long long& ans,int& cntLeaves){
+    if(!root) return 0;
+    if(!root->left && !root->right) cntLeaves++;
+    
+    long long leftSum = maxPathSum(root->left,ans,cntLeaves);
+    long long rightSum = maxPathSum(root->right,ans,cntLeaves);
+
+    ans = max(ans,root->val + leftSum + rightSum);
+
+    return root->val + max(leftSum,rightSum);
+}
+
+long long int findMaxSumPath(TreeNode<int> *root)
+{
+    long long ans = 0;
+    int cntLeaves = 0;
+    maxPathSum(root, ans, cntLeaves);
+
+    if(cntLeaves < 2) return -1;
+    return ans;
+}
+
+
+Solution 3 : (Leetcode Most optimal)
+
+class Solution {
+private:
+// https://youtu.be/WszrfSwMz58
+int maxPathSum(TreeNode* root,int& ans){
+    if(!root) return 0;
+    
+    int leftSum = max(0,maxPathSum(root->left,ans));
+    int rightSum = max(0,maxPathSum(root->right,ans));
+    
+    ans = max(ans,root->val + leftSum + rightSum);
+
+    return root->val + max(leftSum,rightSum);
+}
+
+public:
+    int maxPathSum(TreeNode* root) {
+        int ans = INT_MIN;
+        maxPathSum(root, ans);
+        return ans;
+    }
+};

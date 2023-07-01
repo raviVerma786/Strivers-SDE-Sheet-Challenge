@@ -1,0 +1,26 @@
+Question Link : https://www.codingninjas.com/studio/problems/predecessor-and-successor-in-bst_8230742?challengeSlug=striver-sde-challenge&leftPanelTab=0
+https://practice.geeksforgeeks.org/problems/predecessor-and-successor/1
+
+Solution : Brute force
+
+void helper(BinaryTreeNode<int>* root, int key,int &pre,int &suc){
+    if(!root) return;
+
+    helper(root->left,key,pre,suc);
+    
+    if(root->data < key) pre = max(pre,root->data);
+    if(root->data > key) suc = min (suc,root->data);
+
+    helper(root->right,key,pre,suc);
+}
+
+pair<int,int> predecessorSuccessor(BinaryTreeNode<int>* root, int key)
+{
+    int pre = INT_MIN,suc=INT_MAX;
+    helper(root,key,pre,suc);
+
+    if(pre == INT_MIN) pre = -1;
+    if(suc == INT_MAX) suc = -1;
+
+    return {pre,suc};
+}

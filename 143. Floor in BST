@@ -1,0 +1,19 @@
+Question link : https://www.codingninjas.com/studio/problems/floor-in-bst_8230753?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+int floorInBST(TreeNode<int> * root, int X)
+{
+    int floor = -1;
+    while(root){
+        if(root->val == X) return X;
+
+        if(root->val < X){
+            floor = root->val;
+            root = root->right;
+        }
+        else root = root->left;
+    }
+
+    return floor;
+}

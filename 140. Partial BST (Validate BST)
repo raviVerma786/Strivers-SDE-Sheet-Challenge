@@ -1,0 +1,15 @@
+Question Link : https://www.codingninjas.com/studio/problems/partial-bst_8230723?challengeSlug=striver-sde-challenge&leftPanelTab=0
+https://leetcode.com/problems/validate-binary-search-tree/
+
+Solution : 
+
+//https://youtu.be/f-sj7I5oXEI
+bool isBst(BinaryTreeNode<int> *root,int mini,int maxi){
+    if(!root) return true;
+    if(root->data < mini || root->data > maxi) return false;
+
+    return isBst(root->left,mini,root->data) && isBst(root->right,root->data,maxi);
+}
+bool validateBST(BinaryTreeNode<int> *root) {
+    return isBst(root,INT_MIN,INT_MAX);
+}

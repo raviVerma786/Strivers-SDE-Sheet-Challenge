@@ -1,0 +1,139 @@
+Question Link : https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/
+https://www.codingninjas.com/studio/problems/size-of-largest-bst-in-binary-tree_8230743?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : (Brute Force) O(n*n)
+
+Leetcode : 
+
+class Solution {
+public:
+    bool isBST(TreeNode* root,int low,int high,int& cnt){
+        if(!root) return true;
+        if(root->val <= low || root->val >= high) return false;
+        
+        cnt += root->val;
+        return isBST(root->left,low,root->val,cnt) && isBST(root->right,root->val,high,cnt);
+    }
+
+    void helper(TreeNode* root,int &ans){
+        if(!root) return;
+
+        helper(root->left,ans);
+
+        int cnt = 0;
+        if(isBST(root,INT_MIN,INT_MAX,cnt)) ans = max(ans,cnt);
+
+        helper(root->right,ans);
+    }
+
+    int maxSumBST(TreeNode* root) {
+        int ans = 0;
+        helper(root,ans);
+
+        return ans;
+    }
+};
+
+Code Studio : 
+
+bool isBST(TreeNode<int>*root,int low,int high,int& cnt){
+    if(!root) return true;
+    if(root->data <= low || root->data >= high) return false;
+    
+    cnt++;
+    return isBST(root->left,low,root->data,cnt) && isBST(root->right,root->data,high,cnt);
+}
+
+void helper(TreeNode<int>* root,int &ans){
+    if(!root) return;
+
+    helper(root->left,ans);
+
+    int cnt = 0;
+    if(isBST(root,INT_MIN,INT_MAX,cnt)) ans = max(ans,cnt);
+
+    helper(root->right,ans);
+}
+
+int largestBST(TreeNode<int>* root) 
+{
+   int ans = 0;
+   helper(root,ans);
+
+   return ans;
+}
+
+
+Solution 2 : (Optimal Solution)
+
+Leetcode :
+
+// https://youtu.be/X0oXMdtUDwo
+
+class NodeValue{
+    public:
+        int maxValue,minValue,maxSumBst;
+        NodeValue(int maxValue,int minValue,int maxSumBst){
+            this->maxValue = maxValue;
+            this->minValue = minValue;
+            this->maxSumBst = maxSumBst;
+        }
+};
+
+class Solution {
+private: 
+    int ans = 0;
+public:
+    NodeValue largestSumBST(TreeNode* root){
+        if(!root) return NodeValue(INT_MIN,INT_MAX,0);
+        
+        NodeValue left = largestSumBST(root->left);
+        NodeValue right = largestSumBST(root->right);
+
+        if(root->val > left.maxValue && root->val < right.minValue){
+            //storing maximum possible answer
+            ans = max(ans,max(root->val + left.maxSumBst + right.maxSumBst,max(left.maxSumBst,right.maxSumBst)));
+            
+            //return appropriate NodeValue
+            return NodeValue(max(root->val,right.maxValue),min(root->val,left.minValue),(root->val + left.maxSumBst + right.maxSumBst));
+        }
+
+        return NodeValue(INT_MAX,INT_MIN,max(left.maxSumBst,right.maxSumBst));
+    }
+
+    int maxSumBST(TreeNode* root) {
+        largestSumBST(root).maxSumBst;
+        return ans;
+    }
+};
+
+Code Studio : 
+
+// https://youtu.be/X0oXMdtUDwo
+struct NodeValue{
+        int maxVal,minVal,maxSize;
+        NodeValue(int maxValue,int minValue,int size){
+            maxVal = maxValue;
+            minVal = minValue;
+            maxSize = size;
+        }
+};
+
+NodeValue largestBst(TreeNode<int>* root){
+        if(!root) return NodeValue(INT_MIN,INT_MAX,0);
+        
+        NodeValue left = largestBst(root->left);
+        NodeValue right = largestBst(root->right);
+
+        if(root->data > left.maxVal && root->data < right.minVal){
+            return NodeValue(max(root->data,right.maxVal),min(root->data,left.minVal),
+            (1+ left.maxSize + right.maxSize));
+        }
+
+        return NodeValue(INT_MAX,INT_MIN,max(left.maxSize,right.maxSize));
+}
+
+int largestBST(TreeNode<int>* root) 
+{
+   return largestBst(root).maxSize;
+}

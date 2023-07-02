@@ -1,0 +1,90 @@
+Question Link : https://leetcode.com/problems/two-sum-iv-input-is-a-bst/description/
+https://www.codingninjas.com/studio/problems/pair-sum-in-bst_8230756?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution 1 : Brute force accepted solution
+
+void inorder(BinaryTreeNode<int>*root,vector<int>&v){
+    if(!root) return;
+
+    inorder(root->left,v);
+    v.push_back(root->data);
+    inorder(root->right,v);
+}
+
+bool pairSumBst(BinaryTreeNode<int> *root, int k)
+{
+    vector<int> v;
+    inorder(root,v);
+
+    int i=0,j=v.size()-1;
+    while(i<j){
+        if(v[i] + v[j] == k) return true;
+        else if(v[i]+v[j] > k) j--;
+        else i++;
+    }
+
+    return false;
+}
+
+
+Solution 2 : Optimal solution
+
+//  https://www.youtube.com/watch?v=D2jMcmxU4bs&ab_channel=takeUforward
+//  https://youtu.be/ssL3sHwPeb4
+
+class BSTiterator{
+    private:
+        stack<TreeNode*> st;
+        bool reverse; // reverse is true then 'before()' and reverse is false then 'next()'.
+
+        void pushAll(TreeNode* node){
+            while(node){
+                st.push(node);
+                if(reverse) node = node->right;
+                else node = node->left;
+            }
+        }
+    public:
+        BSTiterator(TreeNode* root,bool isReverse){
+            reverse = isReverse;
+            pushAll(root);
+        }
+
+        int next(){
+            TreeNode* node = st.top();
+            st.pop();
+
+            int value = node->val;
+            if(reverse) pushAll(node->left);
+            else pushAll(node->right);
+
+            return value;
+        }
+
+        bool hasNext(){
+            return !st.empty();
+        }
+};
+class Solution {
+public:
+    bool findTarget(TreeNode* root, int k) {
+        if(!root || (!root->left && !root->right)) return false;
+
+        TreeNode* temp = root;
+        BSTiterator nextIter = BSTiterator(temp,false);
+        temp = root;
+        BSTiterator beforeIter = BSTiterator(temp,true);
+        
+        int left = nextIter.next(),right = beforeIter.next();
+        if(left + right == k) return true;
+        
+        while(left != right){
+            if(left + right == k) return true;
+
+            if(left + right < k) left = nextIter.next();
+            else right = beforeIter.next();
+        }
+
+        return false;
+    }
+};

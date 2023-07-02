@@ -1,0 +1,34 @@
+Question Link : https://www.codingninjas.com/studio/problems/kth-smallest-node-in-bst_8230751?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution : 
+
+// https://www.youtube.com/watch?v=80Zug6D1_r4&ab_channel=takeUforward
+int kthSmallest(TreeNode<int> *root, int k)
+{
+	int ans = -1;
+    TreeNode<int>* curr = root;
+    while(curr){
+        if(k == 1) ans = curr->data;
+
+        if(!curr->left){
+            k--;
+            curr = curr->right;
+        }else{
+            TreeNode<int>* prev = curr->left;
+            while(prev->right && prev->right != curr){
+                prev = prev->right;
+            }
+
+            if(!prev->right){
+                prev->right = curr;
+                curr = curr->left;
+            }else{
+                prev->right = NULL;
+                k--;
+                curr = curr->right;
+            }
+        }
+    }
+
+    return ans;
+}

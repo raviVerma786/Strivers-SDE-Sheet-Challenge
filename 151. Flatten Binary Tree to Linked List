@@ -1,0 +1,49 @@
+Question Link : https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+https://www.codingninjas.com/studio/problems/convert-a-given-binary-tree-to-doubly-linked-list_8230744?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution 1 : (Leetcode):
+class Solution {
+    // https://youtu.be/sWf7k1x9XR4
+public:
+    void flatten(TreeNode* root) {
+        TreeNode* curr = root, *prev = NULL;
+        while(curr){
+            if(curr->left){
+                prev = curr->left;
+                while(prev->right) prev = prev->right;
+                prev->right = curr->right;
+                curr->right = curr->left;
+                curr->left = NULL;
+            }
+            curr = curr->right;
+        }
+    }
+};
+
+
+Solution 2 : (code Studio)
+BinaryTreeNode<int>* BTtoDLL(BinaryTreeNode<int>* root) {
+    BinaryTreeNode<int>* head = root;
+    while(head->left) head = head->left;
+    
+    BinaryTreeNode<int>* curr = root,*prev = NULL,*before = NULL;
+
+    while(curr){
+        if(curr->left){
+            prev = curr->left;
+            while(prev->right) prev = prev->right;
+            prev->right = curr;
+
+            BinaryTreeNode<int>* temp = curr->left;
+            curr->left = NULL;
+            
+            if(before) before->right = temp;
+            curr = temp;
+        }
+        else {
+            before = curr;
+            curr = curr->right;
+        }
+    }
+    return head;
+}

@@ -1,0 +1,28 @@
+Question Link : https://leetcode.com/problems/flood-fill/description/
+https://www.codingninjas.com/studio/problems/flood-fill-algorithm_8230806?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+#include<bits/stdc++.h>
+void helper(vector<vector<int>>& image,int i,int j,int color,int startColor,int dx[],int dy[]){
+        image[i][j] = color;
+
+        for(int k=0;k<4;k++){
+            int x = i + dx[k], y= j + dy[k];
+            if(x>=0 && y>=0 && x<image.size() && y<image[0].size() && image[x][y] == startColor){
+                helper(image,x,y,color,startColor,dx,dy);
+            }
+        }
+    }
+vector<vector<int>> floodFill(vector<vector<int>> &image, int sr, int sc, int color)
+{
+    if(image[sr][sc] == color) return image;
+        
+        vector<vector<int>>copy(image);
+        int dx[4] = {1,0,-1,0};
+        int dy[4] = {0,1,0,-1};
+
+        helper(copy,sr,sc,color,image[sr][sc],dx,dy);
+
+        return copy;
+}

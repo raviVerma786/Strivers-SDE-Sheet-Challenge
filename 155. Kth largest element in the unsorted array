@@ -1,0 +1,54 @@
+Question Link : https://leetcode.com/problems/kth-largest-element-in-an-array/description/
+https://www.codingninjas.com/studio/problems/kth-largest-element-in-the-unsorted-array_8230740?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution 1 : O(nlogn)
+
+#include <bits/stdc++.h> 
+int kthLargest(vector<int>& arr, int size, int K)
+{
+		priority_queue<int,vector<int>,greater<int>> pq;
+        for(int i : arr){
+            pq.push(i);
+            if(pq.size() > K) pq.pop();
+        }
+        return pq.top();
+}
+
+
+Solution 2 : average time O(N)
+
+#include <bits/stdc++.h> 
+
+// https://www.youtube.com/watch?v=BP7GCALO2v8&t=0s&ab_channel=Techdose
+
+int partition(vector<int>&arr,int low, int high){
+	int pivot = arr[high];
+    int i = (low - 1);
+ 
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return (i + 1);
+}
+void quickSelect(vector<int>&arr,int K,int &ans,int low,int high){
+	if (low < high) {
+        int pivot = partition(arr, low, high);
+		if(pivot + 1 == K) return;
+        else if(pivot + 1 > K){
+			quickSelect(arr,K,ans,low, pivot - 1);
+		}else{
+			quickSelect(arr,K,ans,pivot + 1, high);
+		}
+    }
+}
+int kthLargest(vector<int>& arr, int size, int K)
+{
+	int ans = -1;
+	K = size - K + 1; //now question becomes Kth smallest element to find
+	quickSelect(arr,K,ans,0,size-1);
+	return arr[K-1];
+}

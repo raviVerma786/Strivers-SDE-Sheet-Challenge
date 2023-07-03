@@ -1,0 +1,29 @@
+Question Link : 
+
+Solution : https://leetcode.com/problems/kth-largest-element-in-a-stream/
+https://www.codingninjas.com/studio/problems/kth-largest-element-in-a-stream_8230728?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+class Kthlargest {
+private:
+    priority_queue<int,vector<int>,greater<int>> pq;
+    int k;
+public:
+    Kthlargest(int k, vector<int> &arr) {
+       this->k = k;
+
+       for(int i : arr){
+           pq.push(i);
+           if(pq.size() > k) pq.pop();
+       }
+    }
+
+    void add(int num) {
+        pq.push(num);
+        if(pq.size() > k) pq.pop();
+    }
+
+    int getKthLargest() {
+       return pq.top();
+    }
+
+};

@@ -1,0 +1,67 @@
+Question Link : https://www.codingninjas.com/studio/problems/strongly-connected-components-tarjan-s-algorithm_8230789?challengeSlug=striver-sde-challenge&leftPanelTab=0
+https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/description/
+
+Solution : 
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/V8qIqJxCioo
+//KosaRaju Algorithm
+
+void dfs(int node,stack<int>&st,vector<bool>&vis,vector<int>adj[]){
+    vis[node] = true;
+    for(int i : adj[node]){
+        if(!vis[i]){
+            dfs(i,st,vis,adj);
+        }
+    }
+    st.push(node);
+}
+
+void revDfs(int node,vector<bool>&vis,vector<int>adj[],vector<int>&v){
+    vis[node] = true;
+    v.push_back(node);
+
+    for(int i : adj[node]){
+        if(!vis[i]){
+            revDfs(i,vis,adj,v);
+        }
+    }
+}
+vector<vector<int>> stronglyConnectedComponents(int n, vector<vector<int>> &edges)
+{
+    vector<int> adj[n];
+    for(vector<int>&v : edges){
+        adj[v[0]].push_back(v[1]);
+    }
+
+    stack<int> st;
+    vector<bool> vis(n,false);
+    for(int i=0;i<n;i++){
+        if(!vis[i]){
+            dfs(i,st,vis,adj);
+        }
+    }
+
+    vector<int>transpose[n];
+    for(int i=0;i<n;i++){
+        vis[i] = false;
+        for(int j : adj[i]){
+            transpose[j].push_back(i);
+        }
+    }
+    
+    vector<vector<int>> ans;
+    while(!st.empty()){
+        int node = st.top();
+        st.pop();
+
+        if(!vis[node]){
+            vector<int>temp;
+            revDfs(node,vis,transpose,temp);
+            ans.push_back(temp);
+        }
+    }
+
+    return ans;
+}

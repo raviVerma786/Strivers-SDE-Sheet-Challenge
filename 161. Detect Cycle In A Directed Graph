@@ -1,0 +1,42 @@
+Question Link : https://practice.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/1
+https://www.codingninjas.com/studio/problems/detect-cycle-in-a-directed-graph_8230794?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution : 
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/uzVUw90ZFIg
+// https://youtu.be/iTBaI90lpDQ
+bool isCyclePresent(vector<int>adj[],int node,int parent,vector<bool>&vis,vector<bool>&pathVis){
+  vis[node] = true;
+  pathVis[node] = true;
+
+  for(int child : adj[node]){
+    if(!vis[child]){
+      if(isCyclePresent(adj, child, node, vis, pathVis)) return true;
+    }
+    else if(pathVis[child]) return true;
+  }
+  pathVis[node] = false;
+  
+  return false;
+}
+
+int detectCycleInDirectedGraph(int n, vector < pair < int, int >> & edges) {
+  vector<int>adj[n+1];
+
+  for(pair<int,int>&p : edges){
+    adj[p.first].push_back(p.second);
+  }
+
+  vector<bool>vis(n+1,false);
+  vector<bool>pathVis(n+1,false);
+
+  for(int i=1;i<=n;i++){
+    if(!vis[i]){
+      if(isCyclePresent(adj,i,-1,vis,pathVis)) return true;
+    }
+  }
+
+  return false;
+}

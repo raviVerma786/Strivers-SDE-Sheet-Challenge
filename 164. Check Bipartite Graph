@@ -1,0 +1,35 @@
+Question Link : https://leetcode.com/problems/is-graph-bipartite/
+https://www.codingninjas.com/studio/problems/check-bipartite-graph_8230761?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/-vu34sct1g8
+// https://youtu.be/KG5YFfR0j8A
+bool isBipartite(vector<vector<int>>&adj,vector<int>&color,int node,int fillColor){
+	color[node] = fillColor;
+
+	for(int i=0;i<adj.size();i++){
+		if(adj[node][i] == 1){
+			if(color[i] == -1){
+				if(!isBipartite(adj, color, i, !fillColor)) return false;
+			}
+			else if(color[i] == color[node]) return false;
+		}
+	}
+
+	return true;
+}
+bool isGraphBirpatite(vector<vector<int>> &edges) {
+	int n = edges.size();
+	vector<int> color(n,-1);
+    
+	for(int i=0;i<n;i++){
+		if(color[i] == -1){
+			if(!isBipartite(edges,color,i,0)) return false;
+		}
+	}
+	
+	return true;
+}

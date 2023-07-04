@@ -36,3 +36,44 @@ string cycleDetection (vector<vector<int>>& edges, int n, int m)
 
     return "No";
 }
+
+
+Solution 2 : Gfg (Using Bfs)
+
+class Solution {
+  public:
+    //Using BFS
+    // https://youtu.be/BPlrALf1LDU
+    
+    bool detectCycleUsingBFS(vector<int>adj[],int src,vector<bool>&vis){
+        vis[src] = true;
+        queue<pair<int,int>> q; //{node,parent}
+        q.push({src,-1});
+        
+        while(!q.empty()){
+            int node = q.front().first, parent = q.front().second;
+            q.pop();
+            
+            for(int adjacent : adj[node]){
+                if(!vis[adjacent]){
+                    vis[adjacent] = true;
+                    q.push({adjacent,node});
+                }
+                else if(parent != adjacent) return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    bool isCycle(int V, vector<int> adj[]) {
+        vector<bool>vis(V,false);
+        for(int i=0;i<V;i++){
+            if(!vis[i]){
+                if(detectCycleUsingBFS(adj,i,vis)) return true;
+            }
+        }
+        
+        return false;
+    }
+};

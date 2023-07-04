@@ -1,0 +1,36 @@
+Question Link : https://www.codingninjas.com/studio/problems/topological-sort_8230784?challengeSlug=striver-sde-challenge&leftPanelTab=0
+https://practice.geeksforgeeks.org/problems/topological-sort/1
+
+Solution : 
+
+#include <bits/stdc++.h> 
+
+// https://youtu.be/73sneFXuTEg
+// https://youtu.be/5lZ0iJMrUMk
+vector<int> topologicalSort(vector<vector<int>> &edges, int V, int e)  {
+        vector<int> adj[V];
+        vector<int> indegree(V,0); 
+
+        for(vector<int>&v : edges){
+            adj[v[0]].push_back(v[1]);
+            indegree[v[1]]++;
+        }
+        
+	    queue<int> q;
+	    for(int i=0;i<V;i++){
+	        if(indegree[i] == 0) q.push(i);
+	    }
+	    
+	    vector<int> ans;
+	    while(!q.empty()){
+	        int node = q.front();
+	        q.pop();
+	        
+	        ans.push_back(node);
+	        for(int i : adj[node]){
+	            if(--indegree[i] == 0) q.push(i);
+	        }
+	    }
+	    
+	    return ans;
+}

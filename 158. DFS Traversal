@@ -1,0 +1,38 @@
+Question Link : https://practice.geeksforgeeks.org/problems/depth-first-traversal-for-a-graph/1
+https://www.codingninjas.com/studio/problems/dfs-traversal_8230690?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+Solution : 
+
+// https://youtu.be/Qzf1a--rhp8
+void dfs(vector<int>adj[],int node,vector<bool>&vis,vector<int>&v){
+    vis[node] = true;
+    v.push_back(node);
+
+    for(int child : adj[node]){
+        if(!vis[child]){
+            dfs(adj,child,vis,v);
+        }
+    }
+}
+
+vector<vector<int>> depthFirstSearch(int V, int E, vector<vector<int>> &edges)
+{
+   vector<int> adj[V];
+   for(int i=0;i<E;i++){
+       adj[edges[i][0]].push_back(edges[i][1]);
+       adj[edges[i][1]].push_back(edges[i][0]);
+   }
+
+   vector<bool> vis(V,false);
+   vector<vector<int>> ans;
+
+   for(int i=0;i<V;i++){
+       if(!vis[i]){
+           vector<int> v;
+           dfs(adj,i,vis,v);
+           ans.push_back(v);
+       }
+   }
+
+   return ans;
+}

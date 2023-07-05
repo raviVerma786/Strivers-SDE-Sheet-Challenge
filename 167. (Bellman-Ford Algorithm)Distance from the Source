@@ -19,7 +19,7 @@ class Solution {
             for(vector<int>&it : edges){
                 int u = it[0], v = it[1], wt = it[2];
                 
-                if(dis[u] + wt < dis[v]){
+                if(dis[u] != 1e8 && dis[u] + wt < dis[v]){
                     dis[v] = dis[u] + wt;
                 }
             }
@@ -29,7 +29,7 @@ class Solution {
         for(vector<int> it : edges){
             int u = it[0], v = it[1], wt = it[2];
                 
-                if(dis[u] + wt < dis[v]){
+                if(dis[u] != 1e8 && dis[u] + wt < dis[v]){
                     return {-1};
                 }
         }

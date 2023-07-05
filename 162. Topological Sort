@@ -34,3 +34,43 @@ vector<int> topologicalSort(vector<vector<int>> &edges, int V, int e)  {
 	    
 	    return ans;
 }
+
+
+Solution 2 : Using dfs gfg
+
+// https://www.youtube.com/watch?v=5lZ0iJMrUMk&ab_channel=takeUforward
+class Solution
+{
+	public:
+	//Function to return list containing vertices in Topological order. 
+	
+	void dfs(vector<int>adj[],stack<int>&st,vector<bool>&vis,int node){
+	    vis[node] = true;
+	    
+	    for(int i : adj[node]){
+	        if(!vis[i]){
+	            dfs(adj,st,vis,i);
+	        }
+	    }
+	    
+	    st.push(node);
+	}
+	
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	   stack<int> st;
+	   vector<bool> vis(V,false);
+	   for(int i=0;i<V;i++){
+	       if(!vis[i]){
+	           dfs(adj,st,vis,0);
+	       }
+	   }
+	    
+	    vector<int> ans;
+	    while(!st.empty()){
+	        ans.push_back(st.top());
+	        st.pop();
+	    }
+	    return ans;
+	}
+};

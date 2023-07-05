@@ -1,0 +1,39 @@
+Question Link : https://practice.geeksforgeeks.org/problems/distance-from-the-source-bellman-ford-algorithm/0?fbclid=IwAR2_lL0T84DnciLyzMTQuVTMBOi82nTWNLuXjUgahnrtBgkphKiYk6xcyJU
+https://www.codingninjas.com/studio/problems/bellman-ford_8230845?challengeSlug=striver-sde-challenge
+
+Solution : 
+
+// https://youtu.be/0vVofAhAYjc
+class Solution {
+  public:
+    /*  Function to implement Bellman Ford
+    *   edges: vector of vectors which represents the graph
+    *   S: source vertex to start traversing graph with
+    *   V: number of vertices
+    */
+    vector<int> bellman_ford(int V, vector<vector<int>>&edges, int S) {
+        vector<int>dis(V, 1e8);
+        dis[S]=0;
+        
+        for(int j=0; j<V-1; j++){
+            for(vector<int>&it : edges){
+                int u = it[0], v = it[1], wt = it[2];
+                
+                if(dis[u] + wt < dis[v]){
+                    dis[v] = dis[u] + wt;
+                }
+            }
+        }
+        
+        //run one more iteration if again relaxation is done then -ve weight cycle present
+        for(vector<int> it : edges){
+            int u = it[0], v = it[1], wt = it[2];
+                
+                if(dis[u] + wt < dis[v]){
+                    return {-1};
+                }
+        }
+        
+        return dis;
+    }
+};

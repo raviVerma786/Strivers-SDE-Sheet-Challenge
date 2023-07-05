@@ -1,0 +1,117 @@
+Question Link :https://practice.geeksforgeeks.org/problems/implementing-floyd-warshall2042/1
+https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/description/
+https://www.codingninjas.com/studio/problems/floyd-warshall_8230846?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+
+Solution : Gfg 
+class Solution {
+  public:
+//   https://youtu.be/YbY8cVwWAvw
+	void shortest_distance(vector<vector<int>>&matrix){
+	   int n = matrix.size();
+	    for(int i=0;i<n;i++){
+	        for(int j=0;j<n;j++){
+	            if(matrix[i][j]==-1) matrix[i][j] = 1e9;
+	            if(i==j) matrix[i][j] = 0;
+	        }
+	    }
+	    for(int via=0;via<n;via++){
+	        for(int i=0;i<n;i++){
+	            for(int j=0;j<n;j++){
+	                matrix[i][j] = min(matrix[i][j],matrix[i][via] + matrix[via][j]);
+	            }
+	        }
+	    }
+	    
+	   // for(int i=0;i<n;i++){
+	   //     for(int j=0;j<n;j++){
+	   //         if(matrix[i][j] < 0) then negative cycle exists
+	   //     }
+	   // }
+	    
+	    for(int i=0;i<n;i++){
+	        for(int j=0;j<n;j++){
+	            if(matrix[i][j]==1e9) matrix[i][j] = -1;
+	        }
+	    }
+	}
+};
+
+
+Solution : Code studio
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/YbY8cVwWAvw
+int floydWarshall(int n, int m, int src, int dest, vector<vector<int>> &edges) {
+        vector<vector<int>> dis(n+1,vector<int>(n+1,1e9));;
+        // a -> a at 0 distance
+        for(int i=1;i<=n;i++){
+            dis[i][i] = 0;
+        }
+
+        for(vector<int>&v : edges){
+            dis[v[0]][v[1]] = v[2];
+        }
+
+        //actual floyd warshall algorithm
+        for(int via=1;via<=n;via++){
+            for(int i=1;i<=n;i++){
+                for(int j=1;j<=n;j++){
+                    if(dis[i][via] != 1e9 && dis[via][j] != 1e9 && dis[i][via] + dis[via][j] < dis[i][j]){
+                        dis[i][j] = dis[i][via] + dis[via][j];
+                    }
+                }
+            }
+        }
+    
+        return dis[src][dest];
+}
+
+Solution : Leetcode Problem
+
+class Solution {
+    // https://youtu.be/YbY8cVwWAvw
+private:
+    void floyd_Warshall(vector<vector<int>>&edges,vector<vector<long long>>&dis,int n){
+        // a -> a at 0 distance
+        for(int i=0;i<n;i++){
+            dis[i][i] = 0;
+        }
+
+        for(vector<int>&v : edges){
+            dis[v[0]][v[1]] = v[2];
+            dis[v[1]][v[0]] = v[2];
+        }
+
+        //actual floyd warshall algorithm
+        for(int via=0;via<n;via++){
+            for(int i=0;i<n;i++){
+                for(int j=0;j<n;j++){
+                    dis[i][j] = min(dis[i][j],dis[i][via] + dis[via][j]);
+                }
+            }
+        }
+    }
+
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
+        vector<vector<long long>> dis(n,vector<long long>(n,1e17));
+        floyd_Warshall(edges,dis,n);
+        
+        //finding ans
+        int ans = INT_MAX,ansNode = 0;
+        for(int i=0;i<n;i++){
+            int cnt = 0;
+            for(int j=0;j<n;j++){
+                if(i!=j && dis[i][j] <= distanceThreshold) cnt++;
+            }
+            if(cnt <= ans){
+                ans = cnt;
+                ansNode = i;//in case of equal ansNode must taken max but i is always increasing so it will automatically take max node in case of equal cnt
+            }
+        }
+
+        return ansNode;
+    }
+};

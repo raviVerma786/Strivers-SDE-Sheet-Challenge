@@ -1,0 +1,71 @@
+Question Link : https://practice.geeksforgeeks.org/problems/minimum-spanning-tree/1
+https://www.codingninjas.com/studio/problems/kruskal-s-minimum-spanning-tree-algorithm_8230804?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+Solution : 
+
+#include <bits/stdc++.h> 
+
+// https://youtu.be/1KRmCzBl_mQ
+
+struct node{
+	int u,v,wt;
+	node(int first,int second,int weight){
+		u = first;
+		v = second;
+		wt = weight;
+	}
+};
+
+bool comp(node a,node b){
+	return a.wt < b.wt;
+}
+
+int findParent(int node,vector<int>&parent){
+	if(node == parent[node]) return node;
+	return parent[node] = findParent(parent[node],parent);
+}
+
+void makeUnion(int u,int v,vector<int>&parent,vector<int>&size){
+	u = findParent(u,parent);
+	v = findParent(v,parent);
+
+	if(u == v) return; // u and v are in same component
+
+	if(size[u] > size[v]){
+		parent[v] = u;
+		size[u]++;
+	}else{
+		parent[u] = v;
+		size[v]++;
+	}
+}
+
+int kruskalMST(int n, int m, vector<vector<int>> &graph) {
+	//intializing parent and size array for disjoint set union
+	vector<int> parent(n+1),size(n+1,1);
+	for(int i=0;i<=n;i++) parent[i] = i;
+    
+	//storing graph and sort according to weight of edges
+	vector<node> edges;
+	for(vector<int>&p : graph){
+		int u = p[0], v = p[1], w = p[2];
+		node temp = node(u,v,w);
+		edges.push_back(temp);
+	}
+
+	sort(edges.begin(),edges.end(),comp);
+    
+	//finding mstSum (here we can also find mst)
+	int mstSum = 0;
+
+	for(int i=0;i<m;i++){
+		int u = edges[i].u, v = edges[i].v, wt = edges[i].wt;
+
+		if(findParent(u,parent) != findParent(v,parent)){
+			makeUnion(u, v, parent, size);
+			mstSum += wt;
+		}
+	}
+
+	return mstSum;
+}

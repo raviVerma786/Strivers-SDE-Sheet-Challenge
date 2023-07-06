@@ -1,0 +1,80 @@
+Question Link : https://practice.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1
+
+Solution 1 : Recursive Memoized solution
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/GqOmJHQZivw
+int helper(vector<int>&values,vector<int>&weights,int n,int i,int w,vector<vector<int>>&dp){
+	if(i == n) return 0;
+	if(dp[i][w] != -1) return dp[i][w];
+    
+	int take = 0;
+	if(weights[i] <= w){
+		take = values[i] + helper(values,weights,n,i+1,w - weights[i],dp);
+	}
+
+	int notTake = helper(values,weights,n,i+1,w,dp);
+
+	return dp[i][w] = max(take,notTake);
+}
+
+int maxProfit(vector<int> &values, vector<int> &weights, int n, int w)
+{
+	vector<vector<int>>dp(n,vector<int>(w+1,-1));
+	return helper(values,weights,n,0,w,dp);
+}
+
+Solution 2 : Iterative form of the recusive solution
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/GqOmJHQZivw
+
+int maxProfit(vector<int> &values, vector<int> &weights, int n, int w)
+{
+	vector<vector<int>>dp(n+1,vector<int>(w+1,0));
+
+	for(int i=n-1;i>=0;i--){
+		for(int wt=0;wt<=w;wt++){
+			int take = 0;
+			if(weights[i] <= wt){
+				take = values[i] + dp[i+1][wt - weights[i]];
+			}
+
+			int notTake = dp[i+1][wt];
+
+			dp[i][wt] = max(take,notTake);
+		}
+	}
+
+	return dp[0][w];
+}
+
+
+Solution 3 : space optimised solution of iterative solution
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/GqOmJHQZivw
+
+int maxProfit(vector<int> &values, vector<int> &weights, int n, int w)
+{
+	vector<int> curr(w+1,0),next(w+1,0);
+
+	for(int i=n-1;i>=0;i--){
+		for(int wt=0;wt<=w;wt++){
+			int take = 0;
+			if(weights[i] <= wt){
+				take = values[i] + next[wt - weights[i]];
+			}
+
+			int notTake = next[wt];
+
+			curr[wt] = max(take,notTake);
+		}
+		next = curr;
+	}
+
+	return curr[w];
+}

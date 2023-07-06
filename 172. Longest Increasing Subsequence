@@ -1,0 +1,46 @@
+Question Link : https://leetcode.com/problems/longest-increasing-subsequence/description/
+https://www.codingninjas.com/studio/problems/longest-increasing-subsequence_8230689?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+
+Solution 1 : (recursion and memoization is in leetcode)
+//This is iterative O(n^2) solution
+
+int longestIncreasingSubsequence(int nums[], int n)
+{
+    int ans = 1;
+    vector<int>dp(n,1);
+
+    for(int i=1;i<n;i++){
+        for(int j=0;j<i;j++){
+            if(nums[i] > nums[j]){
+                dp[i] = max(dp[i],dp[j]+1);
+                ans = max(ans,dp[i]);
+            }
+        }
+    }
+    return ans;
+}
+
+Solution 2 : O(n) Solution : (Watching all videos are neccesary to understand the problem)
+
+#include<bits/stdc++.h>
+
+// https://www.youtube.com/watch?v=ekcwMsSIzVc&ab_channel=takeUforward
+// https://www.youtube.com/watch?v=IFfYfonAFGc&ab_channel=takeUforward
+// https://www.youtube.com/watch?v=on2hvxBXJH4&ab_channel=takeUforward
+int longestIncreasingSubsequence(int nums[], int n)
+{
+   vector<int> temp;
+   temp.push_back(nums[0]);
+
+   for(int i=1;i<n;i++){
+       if(nums[i] > temp.back()) temp.push_back(nums[i]);
+       else{
+           int ind = lower_bound(temp.begin(),temp.end(),nums[i]) - temp.begin();
+           temp[ind] = nums[i];
+       }
+   }
+
+   return temp.size();
+}
+

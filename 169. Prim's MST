@@ -1,0 +1,86 @@
+Question Link :https://practice.geeksforgeeks.org/problems/minimum-spanning-tree/1
+https://www.codingninjas.com/studio/problems/prim-s-mst_8230809?challengeSlug=striver-sde-challenge&leftPanelTab=0
+https://leetcode.com/problems/min-cost-to-connect-all-points/
+
+Time Complexity : ElogE
+Space Complexity : (E + V)
+
+Solution : GFG =>
+// https://youtu.be/mJcZjjKzeqk
+//here only mst sum is required so no need to carry parent in priority queue
+class Solution
+{
+	public:
+    int spanningTree(int V, vector<vector<int>> adj[])
+    {
+        vector<bool>vis(V,false);
+        int mstSum = 0;
+        
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<>>pq;//{weight,node}
+        pq.push({0,0});
+        
+        while(!pq.empty()){
+            int wt = pq.top().first, node = pq.top().second;
+            pq.pop();
+            
+            if(vis[node]) continue;
+            
+            vis[node] = true;
+            mstSum += wt;
+            
+            for(vector<int>&p : adj[node]){
+                int u = p[0], w = p[1];
+                if(!vis[u]){
+                    pq.push({w,u});
+                }
+            }
+        }
+        
+        return mstSum;
+    }
+};
+
+
+Solution CodeStudio : 
+
+#include <bits/stdc++.h> 
+
+// https://youtu.be/mJcZjjKzeqk
+//we have to return just edges so we don't need to carry sum of mst
+vector<pair<pair<int, int>, int>> calculatePrimsMST(int n, int m, vector<pair<pair<int, int>, int>> &g)
+{
+    //creating adjoint
+    vector<pair<int,int>> adj[n+1];
+    for(auto p : g){
+        int u = p.first.first, v = p.first.second, wt = p.second;
+        adj[u].push_back({v,wt});
+        adj[v].push_back({u,wt});
+    }
+
+    //finding mst
+    vector<pair<pair<int,int>,int>> mst;
+    vector<bool> vis(n+1,false);
+    priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq; //{weight,{node,parent}}
+    pq.push({0,{1,-1}});
+
+    while(!pq.empty()){
+        int wt = pq.top().first, node = pq.top().second.first, parent = pq.top().second.second;
+        pq.pop();
+
+        if(vis[node]) continue;
+
+        vis[node] = true;
+        if(parent != -1){
+            mst.push_back({{parent,node},wt});
+        }
+
+        for(pair<int,int>&p : adj[node]){
+            int u = p.first, w = p.second;
+            if(!vis[u]){
+                pq.push({w,{u,node}});
+            }
+        }
+    }
+
+    return mst;
+}

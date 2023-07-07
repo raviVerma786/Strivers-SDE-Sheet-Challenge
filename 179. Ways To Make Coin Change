@@ -1,0 +1,89 @@
+Question Link :https://leetcode.com/problems/coin-change/
+https://www.codingninjas.com/studio/problems/ways-to-make-coin-change_8230691?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+
+Solution 1 : Recursive solution with memoization TC : O(n*value), SC: O(n*value) + O(value)
+
+#include<bits/stdc++.h>
+
+//https://youtu.be/HgyouUi11zk
+long helper(int* denominations,int n,int value,int i,vector<vector<long>>&dp){
+    if(i == n) return value == 0;
+    if(dp[i][value] != -1) return dp[i][value];
+
+    long take = 0;
+    if(denominations[i] <= value){
+        take = helper(denominations,n,value - denominations[i],i,dp); //we can take ith coin infinite times
+    }
+
+    long notTake = helper(denominations,n,value,i+1,dp);
+
+    return dp[i][value] = take + notTake;
+}
+
+long countWaysToMakeChange(int *denominations, int n, int value)
+{
+    vector<vector<long>> dp(n,vector<long>(value+1,-1));
+    return helper(denominations,n,value,0,dp);
+}
+
+
+Solution 2 : Iterative solution of the recusive solution TC : O(n*value), SC: O(n*value)
+
+#include<bits/stdc++.h>
+
+//https://youtu.be/HgyouUi11zk
+
+long countWaysToMakeChange(int *denominations, int n, int value)
+{
+    vector<vector<long>> dp(n+1,vector<long>(value+1,0));
+
+    for(int i=n-1;i>=0;i--){
+        for(int val=0;val<=value;val++){
+            if(val == 0) dp[i][val] = 1; //base case
+            else{
+                long take = 0;
+                if(denominations[i] <= val){
+                    take = dp[i][val - denominations[i]];
+                }
+
+                long notTake = dp[i+1][val];
+
+                dp[i][val] = take + notTake;
+            }
+        }
+    }
+    return dp[0][value];
+}
+
+
+Soluiton 3 : after space optimization in solution 2 TC : O(n*value), SC: O(value)
+
+#include<bits/stdc++.h>
+
+//https://youtu.be/HgyouUi11zk
+
+long countWaysToMakeChange(int *denominations, int n, int value)
+{
+    vector<long> curr(value+1,0),next(value+1,0);
+
+    for(int i=n-1;i>=0;i--){
+        for(int val=0;val<=value;val++){
+            if(val == 0) curr[val] = 1; //base case
+            else{
+                long take = 0;
+                if(denominations[i] <= val){
+                    take = curr[val - denominations[i]];
+                }
+
+                long notTake = next[val];
+
+                curr[val] = take + notTake;
+            }
+        }
+
+        next = curr;
+    }
+    
+    return curr[value];
+}

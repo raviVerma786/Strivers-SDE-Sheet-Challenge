@@ -1,0 +1,109 @@
+Question Link : https://leetcode.com/problems/minimum-cost-to-cut-a-stick/
+https://www.codingninjas.com/studio/problems/rod-cutting-problem_8230727?challengeSlug=striver-sde-challenge&leftPanelTab=1
+
+
+Solution : Recursive solution with memoization TC :(n*k)  SC: (n*k) + (n)
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/mO8XpGoJwuo
+int helper(vector<int>&prices,int i,int k,vector<vector<int>>&dp){
+        if(k == 0) return 0;
+        if(i < 0) return 0;
+        if(dp[i][k] != -1) return dp[i][k];
+
+        int cut = 0;
+        if(i + 1 <= k){
+            cut = prices[i] + helper(prices,i,k - i - 1,dp);
+        }
+        int notCut = helper(prices,i-1,k,dp);
+
+        return dp[i][k] = max(cut,notCut);
+}
+
+int cutRod(vector<int> &prices, int n)
+{
+    int m = prices.size();
+  	vector<vector<int>> dp(m,vector<int>(n+1,-1));
+  	return helper(prices,prices.size()-1,n,dp);
+}
+
+
+Solution 2 : updated recursive memoized solution for better indexing in iteration TC :(n*k)  SC: (n*k) + (n)
+#include<bits/stdc++.h>
+
+// https://youtu.be/mO8XpGoJwuo
+int helper(vector<int>&prices,int i,int k,vector<vector<int>>&dp){
+        if(k == 0) return 0;
+        if(i == 0) return 0;
+        if(dp[i][k] != -1) return dp[i][k];
+
+        int cut = 0;
+        if(i <= k){
+            cut = prices[i-1] + helper(prices,i,k - i,dp);
+        }
+        int notCut = helper(prices,i-1,k,dp);
+
+        return dp[i][k] = max(cut,notCut);
+}
+
+int cutRod(vector<int> &prices, int n)
+{
+    int m = prices.size();
+	vector<vector<int>> dp(m + 1,vector<int>(n+1,-1));
+
+	return helper(prices,prices.size(),n,dp);
+}
+
+
+Solution 3 : Bottom up approach of above solution  TC :(n*k)  SC: (n*k)
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/mO8XpGoJwuo
+
+int cutRod(vector<int> &prices, int n)
+{
+    int m = prices.size();
+	vector<vector<int>> dp(m + 1,vector<int>(n+1,0));
+    
+    for(int i=1;i<=m;i++){
+        for(int k=1;k<=n;k++){
+            int cut = 0;
+            if (i <= k) {
+              cut = prices[i - 1] + dp[i][k - i];
+            }
+            int notCut = dp[i - 1][k];
+
+            dp[i][k] = max(cut, notCut);
+        }
+    }
+    return dp[m][n];
+}
+
+
+Solution 4 : space optimised solution TC :(n*k)  SC: (k)
+
+#include<bits/stdc++.h>
+
+// https://youtu.be/mO8XpGoJwuo
+
+int cutRod(vector<int> &prices, int n)
+{
+    int m = prices.size();
+	vector<int>prev(n+1,0),curr(n+1,0);
+    
+    for(int i=1;i<=m;i++){
+        for(int k=1;k<=n;k++){
+            int cut = 0;
+            if (i <= k) {
+              cut = prices[i - 1] + curr[k - i];
+            }
+            int notCut = prev[k];
+
+            curr[k] = max(cut, notCut);
+        }
+        prev = curr;
+    }
+    return curr[n];
+}

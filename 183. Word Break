@@ -1,0 +1,60 @@
+Question Link : https://leetcode.com/problems/word-break/description/
+https://www.codingninjas.com/studio/problems/word-break_8230808?challengeSlug=striver-sde-challenge&leftPanelTab=0
+
+
+Solution 1 : Recursive solution with memoization
+
+#include <bits/stdc++.h> 
+
+// https://www.youtube.com/watch?v=th4OnoGasMU&ab_channel=Techdose
+// https://youtu.be/fNVs1J2KCyo
+ bool helper(string &s,unordered_set<string>&st,vector<int>&dp,int i){
+        if(i >= s.size()) return true;
+        if(dp[i] != -1) return dp[i];
+
+        string str = "";
+        for(int j=i;j<s.size();j++){
+            str.push_back(s[j]);
+            if(st.count(str) && helper(s,st,dp,j+1)) return dp[i] = true;
+        }
+
+        return dp[i] = false;
+}
+
+bool wordBreak(vector < string > & wordDict, int n, string & target) {
+        unordered_set<string> st;
+        for(string &str : wordDict) st.insert(str);
+        
+        int size = target.size();
+        vector<int>dp(size,-1);
+        return helper(target,st,dp,0);
+}
+
+Solution 2 : Bottom up approach of the recursive solution
+
+#include <bits/stdc++.h> 
+
+// https://www.youtube.com/watch?v=th4OnoGasMU&ab_channel=Techdose
+// https://youtu.be/fNVs1J2KCyo
+bool wordBreak(vector < string > & wordDict, int n, string & target) {
+        unordered_set<string> st;
+        for(string &str : wordDict) st.insert(str);
+        
+        int size = target.size();
+        vector<bool>dp(size + 1,false);
+        dp[size] = true;
+
+        for(int i=size-1;i>=0;i--){
+            string str = "";
+            for(int j=i;j<target.size();j++){
+                str.push_back(target[j]);
+                if(st.count(str) && dp[j+1] == true){
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return dp[0];
+}
+

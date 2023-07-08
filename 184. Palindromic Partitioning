@@ -1,0 +1,38 @@
+Question Link : https://practice.geeksforgeeks.org/problems/palindromic-patitioning4845/1
+https://leetcode.com/problems/palindrome-partitioning-ii/
+https://www.codingninjas.com/studio/problems/palindrome-partitioning-ll_8230732?challengeSlug=striver-sde-challenge&leftPanelTab=0
+https://leetcode.com/problems/palindrome-partitioning/
+
+Solution 1 : Recursive solution with memoization (Leetcode)
+
+class Solution {
+public:
+    bool isPalindrome(int i,int j,string &str){
+        while(i < j){
+            if(str[i] != str[j]) return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    int partition(string &s,int i,int n, vector<int>&dp){
+        if(i == n) return 0;
+        if(dp[i] != -1) return dp[i];
+        
+        int minCuts = INT_MAX;
+        for(int j = i;j<n;j++){
+            if(isPalindrome(i,j,s)){
+                int cuts = 1 + partition(s,j+1,n,dp);
+                minCuts = min(minCuts,cuts);
+            }
+        }
+
+        return dp[i] = minCuts;
+    }
+    int minCut(string s) {
+        int n = s.size();
+        vector<int> dp(n,-1);
+        return partition(s,0,n,dp) - 1;
+    }
+};

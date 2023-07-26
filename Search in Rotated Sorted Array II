@@ -1,0 +1,32 @@
+Question Link : https://leetcode.com/problems/search-in-rotated-sorted-array-ii/description/
+
+Solution : 
+
+class Solution {
+public:
+// https://youtu.be/w2G2W8l__pc
+    bool search(vector<int>& arr, int key) {
+         int low = 0, high = arr.size()-1;
+
+        while(low <= high){
+            int mid = (low + high)/2;
+            if(arr[mid] == key) return true;
+            else if(arr[mid] == arr[low] && arr[mid] == arr[high]){
+                low++;
+                high--;
+            }
+            else if(arr[mid] >= arr[low]){
+                //left side sorted
+                if(key < arr[mid] && key >= arr[low]) high = mid - 1;
+                else low = mid + 1;
+            }
+            else{
+                //right side sorted
+                if(key > arr[mid] && key <= arr[high]) low = mid + 1;
+                else high = mid - 1;
+            }
+        }
+
+        return false;
+    }
+};

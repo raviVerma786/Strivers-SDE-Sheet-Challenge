@@ -1,0 +1,66 @@
+Question Link : https://leetcode.com/problems/unique-binary-search-trees/description/
+
+Solution 1 : Recursive solution
+
+class Solution {
+public:
+    int helper(int n,vector<int>&dp){
+        if(n<=1) return 1;
+        if(dp[n] != -1) return dp[n];
+
+        //consider i as root
+        int ans = 0;
+        for(int i=1;i<=n;i++){
+            ans += helper(i-1,dp) * helper(n-i,dp);
+        }
+
+        return dp[n] = ans;
+    }
+
+    int numTrees(int n) {
+        vector<int> dp(n+1,-1);
+        return helper(n,dp);
+    }
+};
+
+
+Solution 2 : Iterative Solution
+
+class Solution {
+public:
+    int helperTabulation(int n){
+        vector<int>dp(n+1,0);
+        dp[0] = dp[1] = 1;
+
+        for(int j=2;j<=n;j++){
+            int ans = 0;
+            for(int i=1;i<=j;i++){
+                ans += dp[i-1]*dp[j-i];
+            }
+            dp[j] = ans;
+        }
+
+        return dp[n];
+    }
+    int numTrees(int n) {
+        return helperTabulation(n);
+    }
+};
+
+
+Solution 3 : Most Optimal Solution (Catalan Number Series Solution)
+
+class Solution {
+    // https://www.youtube.com/watch?v=ox7fOk3HjlA&ab_channel=CodeHelp-byBabbar
+    //Catalan Number : (1/(n+1))*(2n C n)
+public:
+    int numTrees(int n) {
+        int N = 2*n, r = n;
+        long long ans = 1;
+        for(int i=1;i<=r;i++){
+            ans = (ans * (N - i + 1))/i;
+        }
+
+        return ans/(n+1);
+    }
+};

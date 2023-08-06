@@ -1,0 +1,33 @@
+Question Link : https://leetcode.com/problems/permutations-ii/description/
+
+Solution : 
+
+class Solution {
+    // https://www.youtube.com/watch?v=qhBVWf0YafA&ab_channel=NeetCode
+public:
+    void permute(unordered_map<int,int>&mp,int n,vector<vector<int>>&ans,vector<int>&temp){
+        if(temp.size() == n){
+            ans.push_back(temp);
+            return;
+        }
+        for(pair<int,int>p : mp){
+            if(p.second == 0) continue;
+            
+            mp[p.first]--;
+            temp.push_back(p.first);
+            permute(mp,n,ans,temp);
+            mp[p.first]++;
+            temp.pop_back();
+        }
+    }
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        int n = nums.size();
+        unordered_map<int,int>mp;
+        for(int i : nums) mp[i]++;
+        
+        vector<vector<int>>ans;
+        vector<int>temp;
+        permute(mp,n,ans,temp);
+        return ans;
+    }
+};
